@@ -9,7 +9,6 @@ on:
       REGISTRY_URL:
         required: true
         type: string
-      BRANCH:
     secrets:
       SLACK_WEBHOOK_URL:
         required: true
