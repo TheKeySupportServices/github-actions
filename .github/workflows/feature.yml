@@ -9,6 +9,7 @@ on:
       REGISTRY_URL:
         required: true
         type: string
+      BRANCH:
     secrets:
       SLACK_WEBHOOK_URL:
         required: true
@@ -65,13 +66,13 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Build the tagged Docker image
-        run: docker build . --file Dockerfile --tag ${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag1}} --tag ${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag2}} --tag ${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag3}}
+        run: docker build . --file Dockerfile --tag ${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag1}} --tag ${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag2}} --tag ${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag3}}
 
       - name: Linting
-        run: docker run -v /tmp/mount:/app/reports ${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag1}} /bin/bash -c "DJANGO_SETTINGS_MODULE=keystone.settings.settings_ci make lint && DJANGO_SETTINGS_MODULE=keystone.settings.settings_ci make django.missing-migrations"
+        run: docker run -v /tmp/mount:/app/reports ${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag1}} /bin/bash -c "DJANGO_SETTINGS_MODULE=keystone.settings.settings_ci make lint && DJANGO_SETTINGS_MODULE=keystone.settings.settings_ci make django.missing-migrations"
 
       - name: Generate coverage report
-        run: docker run -v /tmp/mount:/app/reports ${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag1}} /bin/bash -c "python manage.py jenkins --enable-coverage --settings=keystone.settings.settings_ci"
+        run: docker run -v /tmp/mount:/app/reports ${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag1}} /bin/bash -c "python manage.py jenkins --enable-coverage --settings=keystone.settings.settings_ci"
 
       - uses: 5monkeys/cobertura-action@master
         with:
@@ -93,7 +94,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Push the tagged Docker image
-        run: docker image push --all-tags ${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT }}/${{ github.event.repository.name }}
+        run: docker image push --all-tags ${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}
 
       - name: Slack notification
         uses: slackapi/slack-github-action@v1.18.0
@@ -127,7 +128,7 @@ jobs:
         run: |
             .github/scripts/create_attestation.sh \
               -p ${{ inputs.PROJECT_ID }} \
-              -i ${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT }}/${{ github.event.repository.name }} \
+              -i ${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }} \
               -t "${{steps.tags.outputs.tag1}}" \
               -a "ba-attestor-qa" \
               -v "1" \
