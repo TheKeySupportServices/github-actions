@@ -126,7 +126,7 @@ jobs:
       - name: Image attestation
         run: |
             .github/scripts/create_attestation.sh \
-              -p "${{ inputs.PROJECT_ID }}" \
+              -p "${{ inputs.GOOGLE_PROJECT_ID }}" \
               -i "${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}" \
               -t "${{steps.tags.outputs.tag1}}" \
               -a "ba-attestor-qa" \
