@@ -1,0 +1,146 @@
+name: Callable Feature workflow
+
+on:
+  workflow_call:
+    secrets:
+      SLACK_WEBHOOK_URL:
+        required: true
+      GCR_JSON_KEY:
+        required: true
+      BINARY_AUTH_JSON_KEY:
+        required: true
+jobs:
+  Docker:
+    name: Build Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Setup version env vars
+        run: .github/scripts/git_changes.sh
+
+      - name: Setup variables
+        id: vars
+        run: |
+          if [[ "${{github.base_ref}}" == "main" || "${{github.ref}}" == "refs/heads/main" ]]; then
+            echo "::set-output name=google_project_id::thekey-prod"
+            echo "::set-output name=env::PROD"
+          fi
+
+          if [[ "${{github.base_ref}}" == "qa" || "${{github.ref}}" == "refs/heads/qa" ]]; then
+            echo "::set-output name=google_project_id::thekey-qa"
+            echo "::set-output name=env::QA"
+          fi
+          echo ::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})
+          echo ::set-output name=commit::$(echo ${GITHUB_SHA})
+          echo ::set-output name=datetime::$(date +'%d%m%Y%H%M')
+
+      - uses: google-github-actions/setup-gcloud@v0
+        with:
+          service_account_key: ${{ secrets.GCR_JSON_KEY }}
+          project_id: ${{ steps.vars.outputs.google_project_id }}
+          export_default_credentials: true
+
+      - name: Configure docker
+        run: gcloud auth configure-docker -q
+
+      - name: Create tags
+        id: tags
+        uses: ./.github/actions/create-tags
+
+      - name: Slack notification
+        uses: slackapi/slack-github-action@v1.18.0
+        with:
+          # This data can be any valid JSON from a previous step in the GitHub Action
+          payload: |
+            {
+              "username": "Github Workflows/Actions",
+              "color": "warning",
+              "text": "Started `${{ github.event.repository.name }}/${{steps.vars.outputs.branch}}#${{ github.run_number }}` <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|Open in browser>\n\n_The changes:_\n${{ env.LAST_CHANGES }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Build the tagged Docker image
+        run: docker build . --file Dockerfile --tag ${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag1}} --tag ${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag2}} --tag ${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag3}}
+
+      - name: Linting
+        run: docker run -v /tmp/mount:/app/reports ${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag1}} /bin/bash -c "DJANGO_SETTINGS_MODULE=keystone.settings.settings_ci make lint && DJANGO_SETTINGS_MODULE=keystone.settings.settings_ci make django.missing-migrations"
+
+      - name: Generate coverage report
+        run: docker run -v /tmp/mount:/app/reports ${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag1}} /bin/bash -c "python manage.py jenkins --enable-coverage --settings=keystone.settings.settings_ci"
+
+      - uses: 5monkeys/cobertura-action@master
+        with:
+          path: /tmp/mount/coverage.xml # Correct path so corb action can review report
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          minimum_coverage: 75
+
+      - name: Slack notification
+        uses: slackapi/slack-github-action@v1.18.0
+        with:
+          # This data can be any valid JSON from a previous step in the GitHub Action
+          payload: |
+            {
+              "username": "Github Workflows/Actions",
+              "color": "warning",
+              "text": "Build successful/Tests PASSED: `${{ github.event.repository.name }}/${{steps.vars.outputs.branch}}#${{ github.run_number }}` <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|Open in browser>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - if: ${{steps.vars.outputs.env}} == 'PROD'
+        name: Tag snapshot
+        uses: tvdias/github-tagger@v0.0.1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          tag: release-${{steps.vars.outputs.datetime}}
+
+      - name: Push the tagged Docker image
+        run: docker image push --all-tags ${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}
+
+      - name: Slack notification
+        uses: slackapi/slack-github-action@v1.18.0
+        with:
+          # This data can be any valid JSON from a previous step in the GitHub Action
+          payload: |
+            {
+              "username": "Github Workflows/Actions",
+              "color": "good",
+              "text": "Image pushed successfully (${{steps.vars.outputs.env}}): `${{ github.event.repository.name }}/${{steps.vars.outputs.branch}}#${{ github.run_number }}` <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|Open in browser>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Unset current project
+        run: gcloud config unset project
+
+      - uses: google-github-actions/setup-gcloud@v0
+        with:
+          service_account_key: ${{ secrets.BINARY_AUTH_JSON_KEY }}
+          project_id: ${{ inputs.PROJECT_ID}}
+          export_default_credentials: true
+
+      - name: Configure docker
+        run: gcloud auth configure-docker -q
+
+      - name: Install gcloud beta
+        run: gcloud components install beta
+
+      - name: Image attestation
+        run: |
+            .github/scripts/create_attestation.sh \
+              -p "${{ inputs.GOOGLE_PROJECT_ID }}" \
+              -i "${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}" \
+              -t "${{steps.tags.outputs.tag1}}" \
+              -a "ba-attestor-qa" \
+              -v "1" \
+              -k "crypto-key-qa" \
+              -l "europe-west2" \
+              -r "keyring-qa"
+
+
+
+      # Maybe keep linting to PR only to improve, can we do the same for tests or is it too risky??
