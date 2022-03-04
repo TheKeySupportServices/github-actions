@@ -39,7 +39,7 @@ jobs:
 
       - name: Create tags
         id: tags
-        uses: ./.github/actions/create-tags
+        uses: .github/actions/create-tags
 
       - name: Slack notification
         uses: slackapi/slack-github-action@v1.18.0
