@@ -13,6 +13,6 @@ runs:
     steps:
       - shell: bash
         run: |
-          echo ::set-output name=tag1::$(echo ${{ github.event.inputs.branch }}-${{ github.event.inputs.commit }}-${{ github.event.inputs.datetime }})
-          echo ::set-output name=tag2::$(echo ${{ github.event.inputs.branch }}-${{ github.event.inputs.commit }})
-          echo ::set-output name=tag3::$(echo ${{ github.event.inputs.branch }})
+          echo ::set-output name=tag1::$(echo ${{ inputs.branch }}-${{ inputs.commit }}-${{ inputs.datetime }})
+          echo ::set-output name=tag2::$(echo ${{ inputs.branch }}-${{ inputs.commit }})
+          echo ::set-output name=tag3::$(echo ${{ inputs.branch }})
