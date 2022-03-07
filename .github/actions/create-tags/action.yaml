@@ -1,11 +1,21 @@
 name: 'tags'
 description: 'tags'
-outputs: {}
+inputs:
+  branch:
+    required: true
+  commit:
+    required: true
+  datetime:
+    require: true
+outputs:
+  tag1:
+  tag2:
+  tag3:
 runs:
     using: "composite"
     steps:
       - shell: bash
         run: |
-          echo ::set-output name=tag1::$(echo ${{steps.vars.outputs.branch}}-${{steps.vars.outputs.commit}}-${{steps.vars.outputs.datetime}})
-          echo ::set-output name=tag2::$(echo ${{steps.vars.outputs.branch}}-${{steps.vars.outputs.commit}})
-          echo ::set-output name=tag3::$(echo ${{steps.vars.outputs.branch}})
+          echo ::set-output name=tag1::$(echo ${{ github.event.inputs.branch }}-${{ github.event.inputs.commit }}-${{ github.event.inputs.datetime }})
+          echo ::set-output name=tag2::$(echo ${{ github.event.inputs.branch }}-${{ github.event.inputs.commit }})
+          echo ::set-output name=tag3::$(echo ${{ github.event.inputs.branch }})

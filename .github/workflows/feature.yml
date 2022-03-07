@@ -39,6 +39,10 @@ jobs:
 
       - name: Create tags
         id: tags
+        with:
+          branch: ${{ steps.vars.outputs.branch }}
+          commit: ${{ steps.vars.outputs.commit }}
+          datetime: ${{ steps.vars.outputs.datetime }}
         uses: TheKeySupportServices/github-actions/.github/actions/create-tags@main
 
       - name: Slack notification
