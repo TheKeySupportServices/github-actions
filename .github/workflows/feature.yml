@@ -39,8 +39,7 @@ jobs:
 
       - name: Create tags
         id: tags
-        #uses: .github/actions/create-tags
-        uses: TheKeySupportServices/github-actions/.github/actions/create-tags/action.yaml@main
+        uses: ./.github/actions/create-tags
 
       - name: Slack notification
         uses: slackapi/slack-github-action@v1.18.0
