@@ -8,9 +8,12 @@ inputs:
   datetime:
     require: true
 outputs:
-  tag1: ${{ steps.tags.outputs.tag1 }}
-  tag2: ${{ steps.tags.outputs.tag2 }}
-  tag3: ${{ steps.tags.outputs.tag3 }}
+  tag1:
+    value: ${{ steps.tags.outputs.tag1 }}
+  tag2:
+    value: ${{ steps.tags.outputs.tag2 }}
+  tag3:
+    value: ${{ steps.tags.outputs.tag3 }}
 runs:
     using: "composite"
     steps:
