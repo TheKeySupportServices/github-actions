@@ -7,11 +7,15 @@ inputs:
     required: true
   datetime:
     require: true
-outputs: {}
+outputs:
+  tag1: ${{ steps.tags.outputs.tag1 }}
+  tag2: ${{ steps.tags.outputs.tag2 }}
+  tag3: ${{ steps.tags.outputs.tag3 }}
 runs:
     using: "composite"
     steps:
-      - shell: bash
+      - id: tags
+        shell: bash
         run: |
           echo ::set-output name=tag1::$(echo ${{ inputs.branch }}-${{ inputs.commit }}-${{ inputs.datetime }})
           echo ::set-output name=tag2::$(echo ${{ inputs.branch }}-${{ inputs.commit }})
