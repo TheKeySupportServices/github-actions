@@ -16,7 +16,7 @@ outputs:
 runs:
     using: "composite"
     steps:
-      - id: tags
+      - id: vars
         shell: bash
         run: |
           if [[ "${{github.base_ref}}" == "main" || "${{github.ref}}" == "refs/heads/main" ]]; then
