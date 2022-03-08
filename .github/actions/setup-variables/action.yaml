@@ -31,4 +31,4 @@ runs:
           echo ::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})
           echo ::set-output name=commit::$(echo ${GITHUB_SHA})
           echo ::set-output name=datetime::$(date +'%d%m%Y%H%M')
-          echo ::set-output name:registry_url::eu.gcr.io
+          echo ::set-output name=registry_url::eu.gcr.io
