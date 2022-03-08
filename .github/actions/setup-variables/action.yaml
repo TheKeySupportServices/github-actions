@@ -4,7 +4,7 @@ outputs:
   env:
     value: ${{ steps.vars.outputs.env }}
   google_project_id:
-    value: $(( steps.vars.outputs.google_project_id }}
+    value: ${{ steps.vars.outputs.google_project_id }}
   branch:
     value: ${{ steps.vars.outputs.branch }}
   commit:
