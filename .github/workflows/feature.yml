@@ -18,10 +18,14 @@ jobs:
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
+      - name: Setup variables
+        id: vars
+        uses: TheKeySupportServices/github-actions/.github/actions/setup-variables@main
+
       - uses: google-github-actions/setup-gcloud@v0
         with:
           service_account_key: ${{ secrets.GCR_JSON_KEY }}
-          project_id: ${{ inputs.GOOGLE_PROJECT_ID }}
+          project_id: ${{ steps.vars.outputs.google_project_id }}
           export_default_credentials: true
 
       - name: Configure docker
@@ -29,10 +33,6 @@ jobs:
 
       - name: Setup version env vars
         run: .github/scripts/git_changes.sh
-
-      - name: Setup variables
-        id: vars
-        uses: TheKeySupportServices/github-actions/.github/actions/setup-variables@main
 
       - name: Create tags
         id: tags
@@ -55,20 +55,14 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-      - name: Build the tagged Docker image
-        run: docker build . --file Dockerfile --tag ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag1}} --tag ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag2}} --tag ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag3}}
-
-      - name: Linting
-        run: docker run -v /tmp/mount:/app/reports ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag1}} /bin/bash -c "DJANGO_SETTINGS_MODULE=keystone.settings.settings_ci make lint && DJANGO_SETTINGS_MODULE=keystone.settings.settings_ci make django.missing-migrations"
-
-      - name: Generate coverage report
-        run: docker run -v /tmp/mount:/app/reports ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag1}} /bin/bash -c "python manage.py jenkins --enable-coverage --settings=keystone.settings.settings_ci"
-
-      - uses: 5monkeys/cobertura-action@master
+      - name: Build, lint, test
         with:
-          path: /tmp/mount/coverage.xml # Correct path so corb action can review report
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          minimum_coverage: 75
+          registry_url: ${{ steps.vars.outputs.registry_url }}
+          google_project_id: ${{ steps.vars.outputs.google_project_id }}
+          tag1: ${{ steps.tags.outputs.tag1 }}
+          tag2: ${{ steps.tags.outputs.tag2 }}
+          tag3: ${{ steps.tags.outputs.tag3 }}
+        uses: TheKeySupportServices/github-actions/.github/actions/build-lint-test@main
 
       - name: Slack notification
         uses: slackapi/slack-github-action@v1.18.0

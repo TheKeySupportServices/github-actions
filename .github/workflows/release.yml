@@ -36,7 +36,11 @@ jobs:
 
       - name: Create tags
         id: tags
-        uses: ./.github/actions/create-tags
+        with:
+          branch: ${{ steps.vars.outputs.branch }}
+          commit: ${{ steps.vars.outputs.commit }}
+          datetime: ${{ steps.vars.outputs.datetime }}
+        uses: TheKeySupportServices/github-actions/.github/actions/create-tags@main
 
       - name: Slack notification
         uses: slackapi/slack-github-action@v1.18.0
@@ -51,20 +55,14 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-      - name: Build the tagged Docker image
-        run: docker build . --file Dockerfile --tag ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag1}} --tag ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag2}} --tag ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag3}}
-
-      - name: Linting
-        run: docker run -v /tmp/mount:/app/reports ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag1}} /bin/bash -c "DJANGO_SETTINGS_MODULE=keystone.settings.settings_ci make lint && DJANGO_SETTINGS_MODULE=keystone.settings.settings_ci make django.missing-migrations"
-
-      - name: Generate coverage report
-        run: docker run -v /tmp/mount:/app/reports ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ github.event.repository.name }}:${{steps.tags.outputs.tag1}} /bin/bash -c "python manage.py jenkins --enable-coverage --settings=keystone.settings.settings_ci"
-
-      - uses: 5monkeys/cobertura-action@master
+      - name: Build, lint, test
         with:
-          path: /tmp/mount/coverage.xml # Correct path so corb action can review report
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          minimum_coverage: 75
+          registry_url: ${{ steps.vars.outputs.registry_url }}
+          google_project_id: ${{ steps.vars.outputs.google_project_id }}
+          tag1: ${{ steps.tags.outputs.tag1 }}
+          tag2: ${{ steps.tags.outputs.tag2 }}
+          tag3: ${{ steps.tags.outputs.tag3 }}
+        uses: TheKeySupportServices/github-actions/.github/actions/build-lint-test@main
 
       - name: Slack notification
         uses: slackapi/slack-github-action@v1.18.0
