@@ -15,12 +15,15 @@ runs:
     using: "composite"
     steps:
       - name: Build the tagged Docker image
+        shell: bash
         run: docker build . --file Dockerfile --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag2 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag3 }}
 
       - name: Linting
+        shell: bash
         run: docker run -v /tmp/mount:/app/reports ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }} /bin/bash -c "DJANGO_SETTINGS_MODULE=keystone.settings.settings_ci make lint && DJANGO_SETTINGS_MODULE=keystone.settings.settings_ci make django.missing-migrations"
 
       - name: Generate coverage report
+        shell: bash
         run: docker run -v /tmp/mount:/app/reports ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }} /bin/bash -c "python manage.py jenkins --enable-coverage --settings=keystone.settings.settings_ci"
 
       - uses: 5monkeys/cobertura-action@master
