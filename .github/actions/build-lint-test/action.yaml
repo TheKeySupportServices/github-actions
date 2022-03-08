@@ -11,6 +11,8 @@ inputs:
     required: true
   tag3:
     required: true
+  github_token:
+    required: true
 runs:
     using: "composite"
     steps:
@@ -29,5 +31,5 @@ runs:
       - uses: 5monkeys/cobertura-action@master
         with:
           path: /tmp/mount/coverage.xml # Correct path so corb action can review report
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ inputs.github_token }}
           minimum_coverage: 75
