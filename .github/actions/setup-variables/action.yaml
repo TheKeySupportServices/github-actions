@@ -19,15 +19,14 @@ runs:
       - id: vars
         shell: bash
         run: |
+          echo "::set-output name=google_project_id::thekey-qa"
+          echo "::set-output name=env::QA"
+
           if [[ "${{github.base_ref}}" == "main" || "${{github.ref}}" == "refs/heads/main" ]]; then
             echo "::set-output name=google_project_id::thekey-prod"
             echo "::set-output name=env::PROD"
           fi
 
-          if [[ "${{github.base_ref}}" == "qa" || "${{github.ref}}" == "refs/heads/qa" ]]; then
-            echo "::set-output name=google_project_id::thekey-qa"
-            echo "::set-output name=env::QA"
-          fi
           echo ::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})
           echo ::set-output name=commit::$(echo ${GITHUB_SHA})
           echo ::set-output name=datetime::$(date +'%d%m%Y%H%M')
