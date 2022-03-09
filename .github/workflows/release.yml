@@ -86,7 +86,7 @@ jobs:
           tag: release-${{steps.vars.outputs.datetime}}
 
       - name: Push the tagged Docker image
-        run: docker image push --all-tags ${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}
+        run: docker image push --all-tags ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ github.event.repository.name }}
 
       - name: Slack notification
         uses: slackapi/slack-github-action@v1.18.0
