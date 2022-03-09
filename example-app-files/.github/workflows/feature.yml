@@ -1,0 +1,13 @@
+name: Build
+on:
+  pull_request:
+    types: [opened, reopened]
+jobs:
+  build_feature_branch:
+    uses: TheKeySupportServices/github-actions/.github/workflows/feature.yml@main
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      GCR_JSON_KEY: ${{ secrets.GCR_JSON_KEY }}
+      BINARY_AUTH_JSON_KEY: ${{ secrets.BINARY_AUTH_JSON_KEY }}
+
+      # The callable workflow behind this can be located via the url provided in the 'uses' definition..
