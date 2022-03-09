@@ -85,8 +85,8 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           tag: release-${{steps.vars.outputs.datetime}}
 
-      - name: Push the tagged Docker image
-        run: docker image push --all-tags ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ github.event.repository.name }}
+      #- name: Push the tagged Docker image
+      #  run: docker image push --all-tags ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ github.event.repository.name }}
 
       - name: Slack notification
         uses: slackapi/slack-github-action@v1.18.0
@@ -116,17 +116,17 @@ jobs:
       - name: Install gcloud beta
         run: gcloud components install beta
 
-      - name: Image attestation
-        run: |
-            .github/scripts/create_attestation.sh \
-              -p "${{ inputs.GOOGLE_PROJECT_ID }}" \
-              -i "${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}" \
-              -t "${{steps.tags.outputs.tag3}}" \
-              -a "ba-attestor-qa" \
-              -v "1" \
-              -k "crypto-key-qa" \
-              -l "europe-west2" \
-              -r "keyring-qa"
+      #- name: Image attestation
+      #  run: |
+      #      .github/scripts/create_attestation.sh \
+      #        -p "${{ inputs.GOOGLE_PROJECT_ID }}" \
+      #        -i "${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}" \
+      #        -t "${{steps.tags.outputs.tag3}}" \
+      #        -a "ba-attestor-qa" \
+      #        -v "1" \
+      #        -k "crypto-key-qa" \
+      #        -l "europe-west2" \
+      #        -r "keyring-qa"
 
 
 
