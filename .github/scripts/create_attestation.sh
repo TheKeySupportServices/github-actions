@@ -158,4 +158,7 @@ then
   exit 0
 fi
 
+gcloud --quiet container images add-tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:${IMAGE_TAG}-signed
+
+
 echo "test"

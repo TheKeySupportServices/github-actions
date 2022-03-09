@@ -121,7 +121,7 @@ jobs:
             .github/scripts/create_attestation.sh \
               -p "${{ inputs.GOOGLE_PROJECT_ID }}" \
               -i "${{ inputs.REGISTRY_URL }}/${{ inputs.GOOGLE_PROJECT_ID }}/${{ github.event.repository.name }}" \
-              -t "${{steps.tags.outputs.tag1}}" \
+              -t "${{steps.tags.outputs.tag3}}" \
               -a "ba-attestor-qa" \
               -v "1" \
               -k "crypto-key-qa" \
