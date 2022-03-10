@@ -5,6 +5,8 @@ inputs:
     required: true
   google_project_id:
     required: true
+  django_settings_module:
+    required: true
   tag1:
     required: true
   tag2:
