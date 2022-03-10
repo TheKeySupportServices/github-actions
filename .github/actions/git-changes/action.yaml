@@ -27,8 +27,9 @@ runs:
 
           GIT_COMMIT="$(sed -n '1p' 'app/GIT_COMMIT')"
 
-          LAST_CHANGES="$(cat 'app/GIT_CHANGES')"
-          VERSION="TEST"
+          #LAST_CHANGES="$(cat 'app/GIT_CHANGES')"
+          LAST_CHANGES="TEST"
+          VERSION="$(sed -n '1p' 'version.txt')"
 
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "GIT_COMMIT=$GIT_COMMIT" >> $GITHUB_ENV
