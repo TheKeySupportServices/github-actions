@@ -2,6 +2,10 @@ name: Callable Feature workflow
 
 on:
   workflow_call:
+    inputs:
+      DJANGO_SETTINGS_MODULE:
+        required: true
+        type: string
     secrets:
       SLACK_WEBHOOK_URL:
         required: true

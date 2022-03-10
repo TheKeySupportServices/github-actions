@@ -22,7 +22,7 @@ runs:
 
       - name: Linting
         shell: bash
-        run: docker run -v /tmp/mount:/app/reports ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }} /bin/bash -c "DJANGO_SETTINGS_MODULE=keystone.settings.settings_ci make lint && DJANGO_SETTINGS_MODULE=keystone.settings.settings_ci make django.missing-migrations"
+        run: docker run -v /tmp/mount:/app/reports ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }} /bin/bash -c "DJANGO_SETTINGS_MODULE=${{ inputs.DJANGO_SETTINGS_MODULE }} make lint && DJANGO_SETTINGS_MODULE=${{ inputs.DJANGO_SETTINGS_MODULE }} make django.missing-migrations"
 
       - name: Generate coverage report
         shell: bash
