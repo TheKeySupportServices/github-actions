@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
       - name: Setup version env vars
-        run: TheKeySupportServices/github-actions/.github/actions/git-changes@main
+        uses: TheKeySupportServices/github-actions/.github/actions/git-changes@main
 
       - name: Setup variables
         id: vars
