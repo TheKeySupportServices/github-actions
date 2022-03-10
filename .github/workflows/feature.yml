@@ -32,7 +32,7 @@ jobs:
         run: gcloud auth configure-docker -q
 
       - name: Setup version env vars
-        run: .github/scripts/git_changes.sh
+        run: TheKeySupportServices/github-actions/.github/actions/git-changes@main
 
       - name: Create tags
         id: tags

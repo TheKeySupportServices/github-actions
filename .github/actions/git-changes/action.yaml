@@ -1,0 +1,22 @@
+name: 'changes'
+description: 'git changes'
+inputs:
+  branch:
+    required: true
+  commit:
+    required: true
+  datetime:
+    require: true
+outputs:
+  version:
+    value: ${{ steps.changes.outputs.version }}
+  git_commit:
+    value: ${{ steps.changes.outputs.git_commit }}
+  last_changes:
+    value: ${{ steps.changes.outputs.last_changes }}
+runs:
+    using: "composite"
+    steps:
+      - id: changes
+        shell: bash
+        run: .github/scripts/git_changes.sh
