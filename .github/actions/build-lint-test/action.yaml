@@ -8,7 +8,7 @@ inputs:
   django_settings_module:
     required: true
   lint_enabled:
-    default: true
+    required: true
   tag1:
     required: true
   tag2:
