@@ -10,7 +10,7 @@ inputs:
   linting_enabled:
     required: true
     default: true
-  tests_enabled: true
+  tests_enabled:
     required: true
     default: true
   tag1:
