@@ -7,6 +7,8 @@ inputs:
     required: true
   django_settings_module:
     required: true
+  lint_enabled:
+    default: true
   tag1:
     required: true
   tag2:
@@ -23,6 +25,7 @@ runs:
         run: docker build . --file Dockerfile --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag2 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag3 }}
 
       - name: Linting
+        if: ${{ inputs.lint_enabled }}
         shell: bash
         run: docker run -v /tmp/mount:/app/reports ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }} /bin/bash -c "DJANGO_SETTINGS_MODULE=${{ inputs.DJANGO_SETTINGS_MODULE }} make lint && DJANGO_SETTINGS_MODULE=${{ inputs.DJANGO_SETTINGS_MODULE }} make django.missing-migrations"
 

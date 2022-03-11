@@ -6,6 +6,10 @@ on:
       DJANGO_SETTINGS_MODULE:
         required: true
         type: string
+      LINT_ENABLED:
+        required: false
+        type: boolean
+        default: true
     secrets:
       SLACK_WEBHOOK_URL:
         required: true
@@ -61,6 +65,7 @@ jobs:
 
       - name: Build, lint, test
         with:
+          LINT_ENABLED: ${{ inputs.LINT_ENABLED }}
           registry_url: ${{ steps.vars.outputs.registry_url }}
           google_project_id: ${{ steps.vars.outputs.google_project_id }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
