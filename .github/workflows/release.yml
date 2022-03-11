@@ -8,7 +8,7 @@ on:
         type: string
       LINT_ENABLED:
         required: false
-        type: boolean
+        type: string
         default: true
     secrets:
       SLACK_WEBHOOK_URL:
