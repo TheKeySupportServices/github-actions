@@ -65,7 +65,7 @@ jobs:
 
       - name: Build, lint, test
         with:
-          LINT_ENABLED: ${{ inputs.LINT_ENABLED }}
+          lint_enabled: ${{ inputs.LINT_ENABLED }}
           registry_url: ${{ steps.vars.outputs.registry_url }}
           google_project_id: ${{ steps.vars.outputs.google_project_id }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
