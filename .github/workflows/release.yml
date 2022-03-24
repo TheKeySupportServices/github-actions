@@ -69,7 +69,7 @@ jobs:
 
       - name: Build, lint, test
         with:
-          lint_enabled: ${{ inputs.LINT_ENABLED }}
+          linting_enabled: ${{ inputs.LINTING_ENABLED }}
           tests_enabled: ${{ inputs.TESTS_ENABLED }}
           registry_url: ${{ steps.vars.outputs.registry_url }}
           google_project_id: ${{ steps.vars.outputs.google_project_id }}
