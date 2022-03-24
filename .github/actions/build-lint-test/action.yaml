@@ -36,7 +36,7 @@ runs:
       - name: Generate coverage report
         if: ${{ inputs.tests_enabled == 'true' }}
         shell: bash
-        run: docker run -v /tmp/mount:/app/reports ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }} /bin/bash -c "python manage.py jenkins --enable-coverage --settings=keystone.settings.settings_ci"
+        run: docker run -v /tmp/mount:/app/reports ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }} /bin/bash -c "python manage.py jenkins --enable-coverage --settings=${{ inputs.DJANGO_SETTINGS_MODULE }}"
 
       - uses: 5monkeys/cobertura-action@master
         if: ${{ inputs.tests_enabled == 'true' }}
