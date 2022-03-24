@@ -32,18 +32,18 @@ runs:
 
 
           PUBLIC_KEY_ID=$(gcloud container binauthz attestors describe \
-          ${ATTESTOR} --format='value(userOwnedGrafeasNote.publicKeys[0].id)' \
-          --project ${GOOGLE_PROJECT_ID})
+          ${{ inputs.ATTESTOR }} --format='value(userOwnedGrafeasNote.publicKeys[0].id)' \
+          --project ${{ inputs.GOOGLE_PROJECT_ID }})
 
           IMAGE_DIGEST=$(gcloud container images describe \
-          ${IMAGE_NAME}:${IMAGE_TAG} --format='value(image_summary.digest)' \
-          --project ${PROJECT_ID})
+          ${{ inputs.IMAGE_NAME }}:${{ inputs.IMAGE_TAG }} --format='value(image_summary.digest)' \
+          --project ${{ inputs.GOOGLE_PROJECT_ID }})
 
           # Verify that the image wasn't already attested.
           if gcloud container binauthz attestations list \
-                --artifact-url "${IMAGE_NAME}@${IMAGE_DIGEST}" \
-                --attestor "${ATTESTOR}" \
-                --attestor-project "${GOOGLE_PROJECT_ID}" \
+                --artifact-url "${{ inputs.IMAGE_NAME }}@${{ inputs.IMAGE_DIGEST }}" \
+                --attestor "${{ inputs.ATTESTOR }}" \
+                --attestor-project "${{ inputs.GOOGLE_PROJECT_ID }}" \
                 --format json \
                 | jq '.[0].kind' \
                 | grep 'ATTESTATION'
@@ -53,21 +53,21 @@ runs:
           fi
 
           gcloud beta container binauthz attestations sign-and-create \
-            --project "${GOOGLE_PROJECT_ID}" \
-            --artifact-url "${IMAGE_NAME}@${IMAGE_DIGEST}" \
-            --attestor "${ATTESTOR}" \
-            --attestor-project "${GOOGLE_PROJECT_ID}" \
-            --keyversion "${KEY_VERSION}" \
-            --keyversion-key "${KMS_KEY}" \
-            --keyversion-location "${KMS_LOCATION}" \
-            --keyversion-keyring "${KMS_KEYRING}" \
-            --keyversion-project "${GOOGLE_PROJECT_ID}"
+            --project "${ inputs.GOOGLE_PROJECT_ID }}" \
+            --artifact-url "${ inputs.IMAGE_NAME }}@${{ inputs.IMAGE_DIGEST }}" \
+            --attestor "${{ inputs.ATTESTOR }}" \
+            --attestor-project "${{ inputs.GOOGLE_PROJECT_ID }}" \
+            --keyversion "${{ inputs.KEY_VERSION }}" \
+            --keyversion-key "${{ inputs.KMS_KEY }}" \
+            --keyversion-location "${{ inputs.KMS_LOCATION }}" \
+            --keyversion-keyring "${{ inputs.KMS_KEYRING }}" \
+            --keyversion-project "${{ inputs.GOOGLE_PROJECT_ID }}"
 
           # Verify that the image wasn't already attested.
           if gcloud container binauthz attestations list \
-                --artifact-url "${IMAGE_NAME}@${IMAGE_DIGEST}" \
-                --attestor "${ATTESTOR}" \
-                --attestor-project "${GOOGLE_PROJECT_ID}" \
+                --artifact-url "${{ inputs.IMAGE_NAME }}@${IMAGE_DIGEST}" \
+                --attestor "${{ inputs.ATTESTOR }}" \
+                --attestor-project "${{ inputs.GOOGLE_PROJECT_ID }}" \
                 --format json \
                 | jq '.[0].kind' \
                 | grep 'ATTESTATION'
@@ -76,5 +76,5 @@ runs:
             exit 0
           fi
 
-          gcloud --quiet container images add-tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:${IMAGE_TAG}-signed
+          gcloud --quiet container images add-tag ${{ inputs.IMAGE_NAME }}:${{ inputs.IMAGE_TAG }} ${{ inputs.IMAGE_NAME }}:${{ inputs.IMAGE_TAG }}-signed
 
