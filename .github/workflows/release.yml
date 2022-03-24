@@ -13,6 +13,7 @@ on:
       TESTS_ENABLED:
         required: false
         type: string
+        default: true
     secrets:
       SLACK_WEBHOOK_URL:
         required: true
