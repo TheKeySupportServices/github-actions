@@ -32,5 +32,5 @@ runs:
 
           echo ::set-output name=branch::$(echo ${GIT_BRANCH})
           echo ::set-output name=commit::$(echo ${GITHUB_SHA})
-          echo ::set-output name=datetime::$(date +'%d%m%Y%H%M')
+          echo ::set-output name=datetime::$(date +'%Y%m%d%H%M')
           echo ::set-output name=registry_url::eu.gcr.io
