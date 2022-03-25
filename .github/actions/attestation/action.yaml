@@ -57,7 +57,7 @@ runs:
             --artifact-url "${{ inputs.IMAGE_NAME }}@${IMAGE_DIGEST}" \
             --attestor "${{ inputs.ATTESTOR }}" \
             --attestor-project "${{ inputs.GOOGLE_PROJECT_ID }}" \
-            --keyversion "${{ inputs.KEY_VERSION }}" \
+            --keyversion "${{ inputs.KMS_KEY_VERSION }}" \
             --keyversion-key "${{ inputs.KMS_KEY }}" \
             --keyversion-location "${{ inputs.KMS_LOCATION }}" \
             --keyversion-keyring "${{ inputs.KMS_KEYRING }}" \
