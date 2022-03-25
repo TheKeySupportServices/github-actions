@@ -135,7 +135,7 @@ jobs:
         with:
           ATTESTOR: "ba-attestor-qa"
           IMAGE_NAME: ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ github.event.repository.name }}
-          IMAGE_TAG: ${{steps.tags.outputs.tag3}}
+          IMAGE_TAG: ${{steps.tags.outputs.tag1}}
           GOOGLE_PROJECT_ID: ${{ steps.vars.outputs.google_project_id }}
           KMS_KEY: "crypto-key-qa"
           KMS_KEY_VERSION: "1"

@@ -73,9 +73,11 @@ runs:
                 | grep 'ATTESTATION'
           then
             echo "Image has been successfully attested."
-            echo "${{ inputs.IMAGE_NAME }}:${{ inputs.IMAGE_TAG }}"
-            gcloud container images add-tag ${{ inputs.IMAGE_NAME }}:${{ inputs.IMAGE_TAG }} ${{ inputs.IMAGE_NAME }}:${{ inputs.IMAGE_TAG }}-signed
             exit 0
           fi
+
+          gcloud --quiet container images add-tag ${{ inputs.IMAGE_NAME }}:${{ inputs.IMAGE_TAG }} ${{ inputs.IMAGE_NAME }}:${{ inputs.IMAGE_TAG }}-signed
+
+
 
 
