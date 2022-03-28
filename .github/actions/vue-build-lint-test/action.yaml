@@ -40,7 +40,7 @@ runs:
         if: ${{ inputs.tests_enabled == 'true' }}
         uses: zgosalvez/github-actions-report-lcov@v1.4.0
         with:
-          coverage-files: /tmp/mount/coverage/lcov.*.info
+          coverage-files: /tmp/mount/coverage
           minimum-coverage: 90
           artifact-name: code-coverage-report
           github-token: ${ inputs.github_token }}
