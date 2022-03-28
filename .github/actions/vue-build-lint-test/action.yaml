@@ -38,12 +38,13 @@ runs:
 
       - name: Report code coverage
         if: ${{ inputs.tests_enabled == 'true' }}
-        uses: zgosalvez/github-actions-report-lcov@v1
+        uses: zgosalvez/github-actions-report-lcov@v1.4.0
         with:
           coverage-files: /tmp/mount/coverage/lcov.*.info
           minimum-coverage: 90
           artifact-name: code-coverage-report
           github-token: ${ inputs.github_token }}
+
 
       - name: Delete test image
         shell: bash
