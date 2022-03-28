@@ -39,7 +39,7 @@ runs:
       - uses: 5monkeys/cobertura-action@master
         if: ${{ inputs.tests_enabled == 'true' }}
         with:
-          path: /tmp/mount/coverage.xml # Correct path so corb action can review report
+          path: /tmp/mount/coverage # Correct path so corb action can review report
           repo_token: ${{ inputs.github_token }}
           minimum_coverage: 75
 
