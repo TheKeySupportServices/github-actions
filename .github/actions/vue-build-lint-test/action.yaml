@@ -45,13 +45,6 @@ runs:
           artifact-name: code-coverage-report
           github-token: ${ inputs.github_token }}
 
-      - uses: 5monkeys/cobertura-action@master
-        if: ${{ inputs.tests_enabled == 'true' }}
-        with:
-          path: /tmp/mount/coverage/lcov-report # Correct path so corb action can review report
-          repo_token: ${{ inputs.github_token }}
-          minimum_coverage: 75
-
       - name: Delete test image
         shell: bash
         run: docker rmi ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }}-test
