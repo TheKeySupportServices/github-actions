@@ -26,15 +26,10 @@ runs:
         shell: bash
         run: docker build . --file Dockerfile.test --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }}-test
 
-      - name: Linting
-        if: ${{ inputs.linting_enabled == 'true' }}
-        shell: bash
-        run: docker run -v /tmp/mount:/usr/src/app/coverage ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }}-test
-
       - name: Generate coverage report
         if: ${{ inputs.tests_enabled == 'true' }}
         shell: bash
-        run: docker run -v /tmp/mount:/usr/src/app/coverage ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }}-test
+        run: docker container start ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }}-test && docker cp ${{ inputs.tag1 }}-test::/usr/src/app/coverage /tmp/mount/coverage
 
       - name: Check cov report
         shell: bash
