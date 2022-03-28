@@ -24,12 +24,12 @@ runs:
     steps:
       - name: Build the test Docker image
         shell: bash
-        run: docker build . --file Dockerfile.test --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }}-test
+        run: docker build . --file Dockerfile.test --tag ${{ github.event.repository.name }}-test
 
       - name: Generate coverage report
         if: ${{ inputs.tests_enabled == 'true' }}
         shell: bash
-        run: docker container start ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }}-test && docker cp ${{ inputs.tag1 }}-test::/usr/src/app/coverage /tmp/mount/coverage
+        run: docker create --name ${{ github.event.repository.name }}-test ${{ github.event.repository.name }}-test && docker container start ${{ github.event.repository.name }}-test && docker cp ${{ github.event.repository.name }}-test:/usr/src/app/coverage /tmp/mount/coverage
 
       - name: Check cov report
         shell: bash
