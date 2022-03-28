@@ -22,12 +22,12 @@ runs:
         #run: .github/scripts/git_changes.sh
         run: |
           touch GIT_CHANGES
-          git log HEAD^..HEAD --pretty="%h %an - %s" > app/GIT_CHANGES
-          git show -s --format=%H > app/GIT_COMMIT
+          git log HEAD^..HEAD --pretty="%h %an - %s" > GIT_CHANGES
+          git show -s --format=%H > GIT_COMMIT
 
-          GIT_COMMIT="$(sed -n '1p' 'app/GIT_COMMIT')"
+          GIT_COMMIT="$(sed -n '1p' 'GIT_COMMIT')"
 
-          #LAST_CHANGES="$(cat 'app/GIT_CHANGES')"
+          #LAST_CHANGES="$(cat 'GIT_CHANGES')"
           LAST_CHANGES="TEST"
           VERSION="$(sed -n '1p' 'version.txt')"
 
