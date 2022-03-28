@@ -1,0 +1,49 @@
+name: 'build-lint-test'
+description: 'build'
+inputs:
+  registry_url:
+    required: true
+  google_project_id:
+    required: true
+  linting_enabled:
+    required: true
+    default: true
+  tests_enabled:
+    required: true
+    default: true
+  tag1:
+    required: true
+  tag2:
+    required: true
+  tag3:
+    required: true
+  github_token:
+    required: true
+runs:
+    using: "composite"
+    steps:
+      - name: Build the test Docker image
+        shell: bash
+        run: docker build . --file Dockerfile.test --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }}-test --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag2 }}-test --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag3 }}-test
+
+      - name: Linting
+        if: ${{ inputs.linting_enabled == 'true' }}
+        shell: bash
+        run: docker run -v /tmp/mount:/usr/src/app/coverage ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }}-test
+
+      - name: Generate coverage report
+        if: ${{ inputs.tests_enabled == 'true' }}
+        shell: bash
+        run: docker run -v /tmp/mount:/usr/src/app/coverage ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }}-test
+
+      - uses: 5monkeys/cobertura-action@master
+        if: ${{ inputs.tests_enabled == 'true' }}
+        with:
+          path: /tmp/mount/coverage.xml # Correct path so corb action can review report
+          repo_token: ${{ inputs.github_token }}
+          minimum_coverage: 75
+
+      - name: Build the tagged Docker image
+        shell: bash
+        run: docker build . --file Dockerfile --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag2 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag3 }}
+
