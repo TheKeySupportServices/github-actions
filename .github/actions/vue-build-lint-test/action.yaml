@@ -33,7 +33,7 @@ runs:
 
       - name: Check cov report
         shell: bash
-        run: ls -lah /tmp/mount/
+        run: ls -lah /tmp/mount/coverage/
 
       - uses: 5monkeys/cobertura-action@master
         if: ${{ inputs.tests_enabled == 'true' }}
