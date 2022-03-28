@@ -33,7 +33,8 @@ runs:
 
       - name: Check cov report
         shell: bash
-        run: ls -lah /tmp/mount/coverage/
+        run: cd /tmp/mount/coverage && sed -i "s|SF:/usr/src/app|SF:$(pwd)|g" lcov.info && ls -lah .
+
 
       - uses: 5monkeys/cobertura-action@master
         if: ${{ inputs.tests_enabled == 'true' }}
