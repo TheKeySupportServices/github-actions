@@ -29,7 +29,7 @@ runs:
       - name: Generate coverage report
         if: ${{ inputs.tests_enabled == 'true' }}
         shell: bash
-        run: docker create --name ${{ github.event.repository.name }}-test ${{ github.event.repository.name }}-test && docker container start ${{ github.event.repository.name }}-test && docker cp ${{ github.event.repository.name }}-test:/usr/src/app/coverage /tmp/mount/coverage
+        run: mkdir /tmp/mount && docker create --name ${{ github.event.repository.name }}-test ${{ github.event.repository.name }}-test && docker container start ${{ github.event.repository.name }}-test && docker cp ${{ github.event.repository.name }}-test:/usr/src/app/coverage /tmp/mount/coverage
 
       - name: Check cov report
         shell: bash
