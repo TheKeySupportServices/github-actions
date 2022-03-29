@@ -70,6 +70,7 @@ jobs:
           tests_enabled: ${{ inputs.TESTS_ENABLED }}
           registry_url: ${{ steps.vars.outputs.registry_url }}
           google_project_id: ${{ steps.vars.outputs.google_project_id }}
+          environment: ${{ steps.vars.outputs.env }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           tag1: ${{ steps.tags.outputs.tag1 }}
           tag2: ${{ steps.tags.outputs.tag2 }}
