@@ -20,11 +20,11 @@ runs:
         shell: bash
         run: |
           echo "::set-output name=google_project_id::thekey-dev"
-          echo "::set-output name=env::QA"
+          echo "::set-output name=env::qa"
 
           if [[ "${{github.base_ref}}" == "main" || "${{github.ref}}" == "refs/heads/main" ]]; then
             echo "::set-output name=google_project_id::thekey-prod"
-            echo "::set-output name=env::PROD"
+            echo "::set-output name=env::prod"
           fi
 
           GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
