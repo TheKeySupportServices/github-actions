@@ -34,7 +34,7 @@ runs:
 
       - name: Check cov report
         shell: bash
-        run: ls -lah $(pwd) && ls -lah
+        run: PROJECT_ROOT=$(pwd) && cd coverage && sed -i "s|SF:/usr/src/app|SF:$PROJECT_ROOT|g" lcov.info
 
       - name: Report code coverage
         if: ${{ inputs.tests_enabled == 'true' }}
