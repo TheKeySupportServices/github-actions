@@ -32,7 +32,8 @@ runs:
         shell: bash
         run: mkdir /tmp/mount && docker create --name ${{ github.event.repository.name }}-test ${{ github.event.repository.name }}-test && docker container start ${{ github.event.repository.name }}-test && docker cp ${{ github.event.repository.name }}-test:/usr/src/app/coverage /tmp/mount/coverage
 
-      - name: Check cov report
+      - name: Adjust report file path
+        if: ${{ inputs.tests_enabled == 'true' }}
         shell: bash
         run: PROJECT_ROOT=$(pwd) && cd /tmp/mount/coverage/ && sed -i "s|SF:/usr/src/app|SF:$PROJECT_ROOT|g" lcov.info
 
@@ -41,13 +42,13 @@ runs:
         uses: zgosalvez/github-actions-report-lcov@v1
         with:
           coverage-files: /tmp/mount/coverage/*.info
-          minimum-coverage: 90
+          minimum-coverage: 75
           artifact-name: code-coverage-report
           github-token: ${ inputs.github_token }}
           working-directory: src
 
-
       - name: Delete test image
+        if: ${{ inputs.tests_enabled == 'true' }}
         shell: bash
         run: docker rmi ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }}-test
 
