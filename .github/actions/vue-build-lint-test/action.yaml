@@ -50,7 +50,7 @@ runs:
       - name: Delete test image
         if: ${{ inputs.tests_enabled == 'true' }}
         shell: bash
-        run: docker rmi ${{ github.event.repository.name }}-test
+        run: docker rmi ${{ github.event.repository.name }}-test -f
 
       - name: Build the tagged Docker image
         shell: bash
