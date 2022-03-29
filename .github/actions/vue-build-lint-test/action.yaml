@@ -50,7 +50,7 @@ runs:
       - name: Delete test image
         if: ${{ inputs.tests_enabled == 'true' }}
         shell: bash
-        run: docker rmi ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }}-test
+        run: docker rmi ${{ github.event.repository.name }}-test
 
       - name: Build the tagged Docker image
         shell: bash
