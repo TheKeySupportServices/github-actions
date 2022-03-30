@@ -40,7 +40,7 @@ runs:
 
       - name: test
         shell: bash
-        run: ls -lah /tmp/mount/ && ls -lah /tmp/mount/reports
+        run: ls -lah /tmp/mount/
 
       - uses: 5monkeys/cobertura-action@master
         if: ${{ inputs.tests_enabled == 'true' }}
