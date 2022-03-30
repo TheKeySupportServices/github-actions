@@ -36,7 +36,7 @@ runs:
       - name: Generate coverage report
         if: ${{ inputs.tests_enabled == 'true' }}
         shell: bash
-        run: docker run -v /tmp/mount:/reports ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }} /bin/bash -c "python manage.py jenkins --enable-coverage --coverage-format=xml --settings=${{ inputs.DJANGO_SETTINGS_MODULE }} && ls -lah && ls -lah reports"
+        run: docker run -v /tmp/mount:/app/reports ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }} /bin/bash -c "python manage.py jenkins --enable-coverage --coverage-format=xml --settings=${{ inputs.DJANGO_SETTINGS_MODULE }} && ls -lah && ls -lah reports"
 
       - name: test
         shell: bash
