@@ -13,6 +13,9 @@ on:
       TESTS_ENABLED:
         required: false
         type: string
+      BUILD_ARGS:
+        required: false
+        type: string
     secrets:
       SLACK_WEBHOOK_URL:
         required: true
@@ -73,7 +76,8 @@ jobs:
           registry_url: ${{ steps.vars.outputs.registry_url }}
           google_project_id: ${{ steps.vars.outputs.google_project_id }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          django_settings_module: ${{ inputs.DJANGO_SETTINGS_MODULE}}
+          django_settings_module: ${{ inputs.DJANGO_SETTINGS_MODULE} }
+          build_args: ${{ inputs.BUILD_ARGS }}
           tag1: ${{ steps.tags.outputs.tag1 }}
           tag2: ${{ steps.tags.outputs.tag2 }}
           tag3: ${{ steps.tags.outputs.tag3 }}
