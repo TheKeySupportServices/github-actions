@@ -22,7 +22,7 @@ inputs:
   github_token:
     required: true
 runs:
-  using: "composite"
+    using: "composite"
     steps:
       - name: Build the test Docker image
         if: ${{ inputs.tests_enabled == 'true' }}
