@@ -37,7 +37,7 @@ runs:
       - name: Generate coverage report
         if: ${{ inputs.tests_enabled == 'true' }}
         shell: bash
-        run: mkdir -p /tmp/mount/ && docker run ${{ github.event.repository.name }}-test /bin/bash -c "python manage.py jenkins --enable-coverage --coverage-format=xml --settings=${{ inputs.DJANGO_SETTINGS_MODULE }} && ls -lah ." && docker cp ${{ github.event.repository.name }}-test:/reports/ /tmp/mount/
+        run: mkdir -p /tmp/mount/ && docker run ${{ github.event.repository.name }}-test /bin/bash -c "python manage.py jenkins --enable-coverage --coverage-format=xml --settings=${{ inputs.DJANGO_SETTINGS_MODULE }} && ls -lah ." && docker cp ${{ github.event.repository.name }}-test:./reports/ /tmp/mount/
 
       - uses: 5monkeys/cobertura-action@master
         if: ${{ inputs.tests_enabled == 'true' }}
