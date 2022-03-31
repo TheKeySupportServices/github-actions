@@ -22,25 +22,22 @@ inputs:
   github_token:
     required: true
 runs:
-    using: "composite"
+  using: "composite"
     steps:
-      - name: Build the tagged Docker image
+      - name: Build the test Docker image
+        if: ${{ inputs.tests_enabled == 'true' }}
         shell: bash
-        run: docker build . --file Dockerfile --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag2 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag3 }}
+        run: docker build . --file Dockerfile.test --tag ${{ github.event.repository.name }}-test
 
       - name: Linting
         if: ${{ inputs.linting_enabled == 'true' }}
         shell: bash
-        run: docker run -v /tmp/mount:/app/reports ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }} /bin/bash -c "DJANGO_SETTINGS_MODULE=${{ inputs.DJANGO_SETTINGS_MODULE }} make lint && DJANGO_SETTINGS_MODULE=${{ inputs.DJANGO_SETTINGS_MODULE }} make django.missing-migrations"
+        run: docker run ${{ github.event.repository.name }}-test /bin/bash -c "DJANGO_SETTINGS_MODULE=${{ inputs.DJANGO_SETTINGS_MODULE }} make lint && DJANGO_SETTINGS_MODULE=${{ inputs.DJANGO_SETTINGS_MODULE }} make django.missing-migrations"
 
       - name: Generate coverage report
         if: ${{ inputs.tests_enabled == 'true' }}
         shell: bash
-        run: docker run ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }} /bin/bash -c "ls -lah . && ls -lah ./reports && python manage.py jenkins --enable-coverage --coverage-format=xml --settings=${{ inputs.DJANGO_SETTINGS_MODULE }} && ls -lah && ls -lah reports"
-
-      - name: test
-        shell: bash
-        run: ls -lah /tmp/mount/coverage
+        run: docker run ${{ github.event.repository.name }}-test /bin/bash -c "ls -lah . && ls -lah ./reports && python manage.py jenkins --enable-coverage --coverage-format=xml --settings=${{ inputs.DJANGO_SETTINGS_MODULE }} && docker cp ${{ github.event.repository.name }}-test:/app/reports/coverage /tmp/mount/coverage/"
 
       - uses: 5monkeys/cobertura-action@master
         if: ${{ inputs.tests_enabled == 'true' }}
@@ -48,3 +45,14 @@ runs:
           path: /tmp/mount/coverage/coverage.xml # Correct path so corb action can review report
           repo_token: ${{ inputs.github_token }}
           minimum_coverage: 75
+
+      - name: Delete test image
+        if: ${{ inputs.tests_enabled == 'true' }}
+        shell: bash
+        run: docker rmi ${{ github.event.repository.name }}-test -f
+
+      - name: Build the tagged Docker image
+        shell: bash
+        run: docker build . --file Dockerfile --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag2 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag3 }} --build-arg environment=${{ inputs.environment }}
+
+
