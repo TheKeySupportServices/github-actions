@@ -36,15 +36,15 @@ runs:
       - name: Generate coverage report
         if: ${{ inputs.tests_enabled == 'true' }}
         shell: bash
-        run: docker run -v /tmp/mount:/app/reports ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }} /bin/bash -c "ls -lah . && ls -lah ./reports && python manage.py jenkins --enable-coverage --coverage-format=xml --settings=${{ inputs.DJANGO_SETTINGS_MODULE }} && ls -lah && ls -lah reports"
+        run: docker run -v /tmp/mount/coverage:/app/reports ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }} /bin/bash -c "ls -lah . && ls -lah ./reports && python manage.py jenkins --enable-coverage --coverage-format=xml --settings=${{ inputs.DJANGO_SETTINGS_MODULE }} && ls -lah && ls -lah reports"
 
       - name: test
         shell: bash
-        run: ls -lah /tmp/mount/
+        run: ls -lah /tmp/mount/coverage
 
       - uses: 5monkeys/cobertura-action@master
         if: ${{ inputs.tests_enabled == 'true' }}
         with:
-          path: /tmp/mount/coverage.xml # Correct path so corb action can review report
+          path: /tmp/mount/coverage/coverage.xml # Correct path so corb action can review report
           repo_token: ${{ inputs.github_token }}
           minimum_coverage: 75
