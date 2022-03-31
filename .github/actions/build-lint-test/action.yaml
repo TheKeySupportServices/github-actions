@@ -27,7 +27,7 @@ runs:
       - name: Build the test Docker image
         if: ${{ inputs.tests_enabled == 'true' }}
         shell: bash
-        run: docker build . --file Dockerfile.test --tag ${{ github.event.repository.name }}-test
+        run: docker build . --file Dockerfile --tag ${{ github.event.repository.name }}-test
 
       - name: Linting
         if: ${{ inputs.linting_enabled == 'true' }}
