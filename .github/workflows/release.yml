@@ -32,7 +32,6 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        if:
         image: postgres
         env:
           POSTGRES_PASSWORD: postgres
