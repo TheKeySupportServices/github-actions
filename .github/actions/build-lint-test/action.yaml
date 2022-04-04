@@ -22,7 +22,7 @@ inputs:
   tag3:
     required: true
   github_token:
-    required: true
+    required: false
   env:
     required: true
 runs:

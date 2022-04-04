@@ -25,7 +25,7 @@ on:
       BINARY_AUTH_JSON_KEY:
         required: true
       GITHUB_READ_ONLY_SSH_KEY:
-        required: true
+        required: false
 jobs:
   Docker:
     name: Build Docker image
