@@ -33,7 +33,7 @@ runs:
       - name: Build the test Docker image
         if: ${{ inputs.tests_enabled == 'true' }}
         shell: bash
-        run: mkdir -p /tmp/mount/ && docker build . --file Dockerfile --build-arg BUILD_ENV=ci --build-arg SSH_KEY=${{ inputs.read_only_ssh_key }} --build-arg NODE_KEY_ENV=${{ inputs.env }} --tag ${{ github.event.repository.name }}-test
+        run: mkdir -p /tmp/mount/ && docker build . --file Dockerfile --build-arg BUILD_ENV=ci --build-arg NODE_KEY_ENV=${{ inputs.env }} --tag ${{ github.event.repository.name }}-test
 
       - name: Start postgres instance
         if: ${{ inputs.postgres_enabled == 'true' }}
