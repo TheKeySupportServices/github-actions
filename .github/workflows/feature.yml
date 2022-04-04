@@ -27,6 +27,19 @@ jobs:
   Docker:
     name: Build Docker image
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        if:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v2
         with:
@@ -75,7 +88,7 @@ jobs:
           tests_enabled: ${{ inputs.TESTS_ENABLED }}
           registry_url: ${{ steps.vars.outputs.registry_url }}
           google_project_id: ${{ steps.vars.outputs.google_project_id }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_READ_ONLY_SSH_KEY }}
           django_settings_module: ${{ inputs.DJANGO_SETTINGS_MODULE} }
           env: ${{ steps.vars.outputs.env }}
           tag1: ${{ steps.tags.outputs.tag1 }}
