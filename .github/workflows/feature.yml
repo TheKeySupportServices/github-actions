@@ -91,7 +91,7 @@ jobs:
           registry_url: ${{ steps.vars.outputs.registry_url }}
           google_project_id: ${{ steps.vars.outputs.google_project_id }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          github_read_only_ssh_key: ${{ secrets.READ_ONLY_SSH_KEY }}
+          read_only_ssh_key: ${{ secrets.READ_ONLY_SSH_KEY }}
           django_settings_module: ${{ inputs.DJANGO_SETTINGS_MODULE} }
           env: ${{ steps.vars.outputs.env }}
           tag1: ${{ steps.tags.outputs.tag1 }}
