@@ -25,6 +25,8 @@ inputs:
     required: false
   env:
     required: true
+  github_read_only_ssh_key:
+    required: false
 runs:
     using: "composite"
     steps:
