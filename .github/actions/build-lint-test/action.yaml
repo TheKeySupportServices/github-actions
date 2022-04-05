@@ -30,6 +30,11 @@ inputs:
 runs:
     using: "composite"
     steps:
+      - name: test
+        id: testing
+        shell: bash
+        run: docker ps
+
       - name: Build the test Docker image
         if: ${{ inputs.tests_enabled == 'true' }}
         shell: bash

@@ -46,6 +46,10 @@ jobs:
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
+      - name: test
+        id: testing
+        run: docker ps
+
       - name: Setup variables
         id: vars
         uses: TheKeySupportServices/github-actions/.github/actions/setup-variables@main
