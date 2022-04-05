@@ -69,6 +69,6 @@ runs:
 
       - name: Build the tagged Docker image
         shell: bash
-        run: docker build . --file Dockerfile --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag2 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag3 }} --build-arg environment=${{ inputs.environment }}
+        run: docker build . --file Dockerfile --build-arg BUILD_ENV="ci" --build-arg NODE_KEY_ENV="${{ inputs.env }}" --build-arg SSH_KEY="${{ inputs.read_only_ssh_key }}" --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag2 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag3 }} --build-arg environment=${{ inputs.environment }}
 
 
