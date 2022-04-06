@@ -16,6 +16,12 @@ on:
       BUILD_ARGS:
         required: false
         type: string
+      NETLIFY_TOKEN:
+        required: false
+        type: string
+      NETLIFY_ENABLED:
+        required: false
+        default: false
     secrets:
       SLACK_WEBHOOK_URL:
         required: true

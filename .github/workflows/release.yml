@@ -17,6 +17,12 @@ on:
       BUILD_ARGS:
         required: false
         type: string
+      NETLIFY_TOKEN:
+        required: false
+        type: string
+      NETLIFY_ENABLED:
+        required: false
+        default: false
     secrets:
       SLACK_WEBHOOK_URL:
         required: true
@@ -161,6 +167,12 @@ jobs:
           KMS_KEYRING: "keyring-qa"
           KMS_LOCATION: "europe-west2"
         uses: TheKeySupportServices/github-actions/.github/actions/attestation@main
+
+      - name: trigger netlify build
+        if: ${{ inputs.NETLIFY_ENABLED }} == 'true'
+        run: |
+          curl -X POST -d '{}' https://api.netlify.com/build_hooks/${{ inputs.NETLIFY_TOKEN }}
+
 
 
 
