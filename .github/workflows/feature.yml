@@ -22,6 +22,7 @@ on:
       NETLIFY_ENABLED:
         required: false
         default: false
+        type: string
     secrets:
       SLACK_WEBHOOK_URL:
         required: true
