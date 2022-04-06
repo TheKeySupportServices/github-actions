@@ -176,6 +176,4 @@ jobs:
 
 
 
-
-
       # Maybe keep linting to PR only to improve, can we do the same for tests or is it too risky?
