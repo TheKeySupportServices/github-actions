@@ -17,13 +17,6 @@ on:
       BUILD_ARGS:
         required: false
         type: string
-      NETLIFY_TOKEN:
-        required: false
-        type: string
-      NETLIFY_ENABLED:
-        required: false
-        default: false
-        type: string
     secrets:
       SLACK_WEBHOOK_URL:
         required: true
@@ -169,12 +162,7 @@ jobs:
           KMS_LOCATION: "europe-west2"
         uses: TheKeySupportServices/github-actions/.github/actions/attestation@main
 
-      - name: trigger netlify build
-        if: ${{ inputs.NETLIFY_ENABLED }} == 'true'
-        run: |
-          curl -X POST -d '{}' https://api.netlify.com/build_hooks/${{ inputs.NETLIFY_TOKEN }}
 
 
 
-
-      # Maybe keep linting to PR only to improve, can we do the same for tests or is it too risky?
+      # Maybe keep linting to PR only to improve, can we do the same for tests or is it too risky.
