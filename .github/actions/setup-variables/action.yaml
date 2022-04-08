@@ -1,5 +1,8 @@
 name: 'tags'
 description: 'tags'
+inputs:
+  image_name_override:
+    required: false
 outputs:
   env:
     value: ${{ steps.vars.outputs.env }}
