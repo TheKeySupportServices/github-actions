@@ -13,6 +13,9 @@ on:
       IMAGE_NAME_OVERRIDE:
         required: false
         type: string
+      SITE:
+        required: false
+        type: string
     secrets:
       SLACK_WEBHOOK_URL:
         required: true
@@ -80,6 +83,7 @@ jobs:
           tag2: ${{ steps.tags.outputs.tag2 }}
           tag3: ${{ steps.tags.outputs.tag3 }}
           image_name: ${{ steps.vars.outputs.image_name }}
+          site: ${{ inputs.SITE }}
         uses: TheKeySupportServices/github-actions/.github/actions/vue-build-lint-test@main
 
       - name: Slack notification
