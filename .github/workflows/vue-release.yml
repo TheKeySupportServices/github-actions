@@ -11,6 +11,9 @@ on:
         required: false
         type: string
         default: true
+      IMAGE_NAME_OVERRIDE:
+        required: false
+        type: string
     secrets:
       SLACK_WEBHOOK_URL:
         required: true
@@ -33,6 +36,8 @@ jobs:
       - name: Setup variables
         id: vars
         uses: TheKeySupportServices/github-actions/.github/actions/setup-variables@main
+        with:
+          image_name_override: ${{ inputs.image_name_override }}
 
       - uses: google-github-actions/setup-gcloud@v0
         with:
@@ -75,6 +80,7 @@ jobs:
           tag1: ${{ steps.tags.outputs.tag1 }}
           tag2: ${{ steps.tags.outputs.tag2 }}
           tag3: ${{ steps.tags.outputs.tag3 }}
+          image_name: ${{ steps.vars.outputs.image_name }}
         uses: TheKeySupportServices/github-actions/.github/actions/vue-build-lint-test@main
 
       - name: Slack notification

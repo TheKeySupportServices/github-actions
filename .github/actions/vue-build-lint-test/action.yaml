@@ -21,18 +21,20 @@ inputs:
     required: true
   environment:
     required: true
+  image_name:
+    required: true
 runs:
     using: "composite"
     steps:
       - name: Build the test Docker image
         if: ${{ inputs.tests_enabled == 'true' }}
         shell: bash
-        run: docker build . --file Dockerfile.test --tag ${{ github.event.repository.name }}-test
+        run: docker build . --file Dockerfile.test --tag ${{ inputs.image_name }}-test
 
       - name: Generate coverage report
         if: ${{ inputs.tests_enabled == 'true' }}
         shell: bash
-        run: mkdir /tmp/mount && docker create --name ${{ github.event.repository.name }}-test ${{ github.event.repository.name }}-test && docker container start ${{ github.event.repository.name }}-test && docker cp ${{ github.event.repository.name }}-test:/usr/src/app/coverage /tmp/mount/coverage
+        run: mkdir /tmp/mount && docker create --name ${{ inputs.image_name }}-test ${{ inputs.image_name }}-test && docker container start ${{ inputs.image_name }}-test && docker cp ${{ inputs.image_name }}-test:/usr/src/app/coverage /tmp/mount/coverage
 
       - name: Adjust report file path
         if: ${{ inputs.tests_enabled == 'true' }}
@@ -52,9 +54,9 @@ runs:
       - name: Delete test image
         if: ${{ inputs.tests_enabled == 'true' }}
         shell: bash
-        run: docker rmi ${{ github.event.repository.name }}-test -f
+        run: docker rmi ${{ inputs.image_name }}-test -f
 
       - name: Build the tagged Docker image
         shell: bash
-        run: docker build . --file Dockerfile --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag1 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag2 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ github.event.repository.name }}:${{ inputs.tag3 }} --build-arg environment=${{ inputs.environment }}
+        run: docker build . --file Dockerfile --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ inputs.image_name }}:${{ inputs.tag1 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ inputs.image_name }}:${{ inputs.tag2 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ inputs.image_name }}:${{ inputs.tag3 }} --build-arg environment=${{ inputs.environment }}
 

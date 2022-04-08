@@ -13,6 +13,8 @@ outputs:
     value: ${{ steps.vars.outputs.datetime }}
   registry_url:
     value: ${{ steps.vars.outputs.registry_url }}
+  image_name:
+    value: ${{ steps.vars.outputs.image_name }}
 runs:
     using: "composite"
     steps:
@@ -21,6 +23,7 @@ runs:
         run: |
           echo "::set-output name=google_project_id::thekey-dev"
           echo "::set-output name=env::qa"
+          echo ::set-output name=image_name::${{ github.event.repository.name }}
 
           if [[ "${{github.base_ref}}" == "main" || "${{github.ref}}" == "refs/heads/main" ]]; then
             echo "::set-output name=google_project_id::thekey-prod"
@@ -29,6 +32,9 @@ runs:
 
           GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
 
+          if [[ "${{ github.event.repository.name }} ]]; then
+            echo ::set-output name=image_name::${{ github.event.repository.name }}
+          fi
 
           echo ::set-output name=branch::$(echo ${GIT_BRANCH})
           echo ::set-output name=commit::$(echo ${GITHUB_SHA})
