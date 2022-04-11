@@ -48,7 +48,7 @@ runs:
         uses: zgosalvez/github-actions-report-lcov@v1
         with:
           coverage-files: /tmp/mount/coverage/*.info
-          minimum-coverage: 75
+          minimum-coverage: 10
           artifact-name: code-coverage-report
           github-token: ${ inputs.github_token }}
 
