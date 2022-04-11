@@ -23,6 +23,8 @@ on:
         required: true
       BINARY_AUTH_JSON_KEY:
         required: true
+      GH_TOKEN:
+        required: true
 jobs:
   Docker:
     name: Build Docker image
