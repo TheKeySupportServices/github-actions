@@ -51,7 +51,6 @@ runs:
           minimum-coverage: 75
           artifact-name: code-coverage-report
           github-token: ${ inputs.github_token }}
-          working-directory: src
 
       - name: Delete test image
         if: ${{ inputs.tests_enabled == 'true' }}
