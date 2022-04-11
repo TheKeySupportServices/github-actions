@@ -19,6 +19,8 @@ inputs:
     required: true
   github_token:
     required: true
+  gh_token:
+    required: true
   environment:
     required: true
   image_name:
@@ -29,7 +31,7 @@ runs:
       - name: Build the test Docker image
         if: ${{ inputs.tests_enabled == 'true' }}
         shell: bash
-        run: docker build . --file Dockerfile.test --tag ${{ inputs.image_name }}-test --build-arg environment=${{ inputs.environment }} --build-arg site=${{ inputs.site }} --build-arg GH_PACKAGE_READ=${{ inputs.github_token }}
+        run: docker build . --file Dockerfile.test --tag ${{ inputs.image_name }}-test --build-arg environment=${{ inputs.environment }} --build-arg site=${{ inputs.site }} --build-arg GH_PACKAGE_READ=${{ inputs.gh_token }}
 
       - name: Generate coverage report
         if: ${{ inputs.tests_enabled == 'true' }}
