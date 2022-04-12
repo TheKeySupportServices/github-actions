@@ -131,7 +131,7 @@ if gcloud container binauthz attestations list \
       | grep 'ATTESTATION'
 then
   echo "Image has already been attested."
-  exit 1
+  exit 0
 fi
 
 gcloud beta container binauthz attestations sign-and-create \
