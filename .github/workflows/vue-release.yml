@@ -105,13 +105,13 @@ jobs:
 
       - if: ${{steps.vars.outputs.env}} == 'PROD'
         name: Tag snapshot
+        continue-on-error: true
         uses: tvdias/github-tagger@v0.0.1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           tag: release-${{steps.vars.outputs.datetime}}
 
       - name: Push the tagged Docker image
-        continue-on-error: true
         run: docker image push --all-tags ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ github.event.repository.name }}
 
       - name: Slack notification
