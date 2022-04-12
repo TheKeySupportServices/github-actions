@@ -143,6 +143,7 @@ jobs:
         run: gcloud components install beta
 
       - name: Image attestation
+        continue-on-error: true
         with:
           ATTESTOR: "ba-attestor-qa"
           IMAGE_NAME: ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ github.event.repository.name }}
