@@ -25,6 +25,8 @@ inputs:
     required: true
   image_name:
     required: true
+  site:
+    required: false
 runs:
     using: "composite"
     steps:

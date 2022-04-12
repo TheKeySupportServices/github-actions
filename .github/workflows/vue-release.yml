@@ -83,6 +83,7 @@ jobs:
           environment: ${{ steps.vars.outputs.env }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           gh_token: ${{ secrets.GH_TOKEN }}
+          site: ${{ inputs.SITE }}
           tag1: ${{ steps.tags.outputs.tag1 }}
           tag2: ${{ steps.tags.outputs.tag2 }}
           tag3: ${{ steps.tags.outputs.tag3 }}
