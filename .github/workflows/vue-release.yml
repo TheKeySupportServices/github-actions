@@ -111,6 +111,7 @@ jobs:
           tag: release-${{steps.vars.outputs.datetime}}
 
       - name: Push the tagged Docker image
+        continue-on-error: true
         run: docker image push --all-tags ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ github.event.repository.name }}
 
       - name: Slack notification
