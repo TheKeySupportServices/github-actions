@@ -131,7 +131,6 @@ if gcloud container binauthz attestations list \
       | grep 'ATTESTATION'
 then
   echo "Image has already been attested."
-  exit 0
 fi
 
 gcloud beta container binauthz attestations sign-and-create \
@@ -155,7 +154,6 @@ if gcloud container binauthz attestations list \
       | grep 'ATTESTATION'
 then
   echo "Image has been successfully attested."
-  exit 0
 fi
 
 gcloud --quiet container images add-tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:${IMAGE_TAG}-signed
