@@ -36,7 +36,7 @@ runs:
           GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
 
           if [[ "${{ inputs.image_name_override }}" ]]; then
-            echo ::set-output name=image_name::$(echo ${{ github.event.repository.name }})
+            echo ::set-output name=image_name::$(echo ${{ inputs.image_name_override }})
           fi
 
           echo ::set-output name=branch::$(echo ${GIT_BRANCH})
