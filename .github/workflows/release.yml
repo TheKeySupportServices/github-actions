@@ -17,6 +17,9 @@ on:
       BUILD_ARGS:
         required: false
         type: string
+      IMAGE_NAME_OVERRIDE:
+        required: false
+        type: string
     secrets:
       SLACK_WEBHOOK_URL:
         required: true
@@ -93,6 +96,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           read_only_ssh_key: ${{ secrets.READ_ONLY_SSH_KEY }}
           django_settings_module: ${{ inputs.DJANGO_SETTINGS_MODULE }}
+          image_name: ${{ steps.vars.outputs.image_name }}
           env: ${{steps.vars.outputs.env}}
           tag1: ${{ steps.tags.outputs.tag1 }}
           tag2: ${{ steps.tags.outputs.tag2 }}
@@ -120,7 +124,7 @@ jobs:
           tag: release-${{steps.vars.outputs.datetime}}
 
       - name: Push the tagged Docker image
-        run: docker image push --all-tags ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ github.event.repository.name }}
+        run: docker image push --all-tags ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}
 
       - name: Slack notification
         uses: slackapi/slack-github-action@v1.18.0
@@ -153,7 +157,7 @@ jobs:
       - name: Image attestation
         with:
           ATTESTOR: "ba-attestor-qa"
-          IMAGE_NAME: ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ github.event.repository.name }}
+          IMAGE_NAME: ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}
           IMAGE_TAG: ${{steps.tags.outputs.tag1}}
           GOOGLE_PROJECT_ID: ${{ steps.vars.outputs.google_project_id }}
           KMS_KEY: "crypto-key-qa"

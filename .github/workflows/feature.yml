@@ -16,6 +16,9 @@ on:
       BUILD_ARGS:
         required: false
         type: string
+      IMAGE_NAME_OVERRIDE:
+        required: false
+        type: string
     secrets:
       SLACK_WEBHOOK_URL:
         required: true
@@ -95,7 +98,8 @@ jobs:
           google_project_id: ${{ steps.vars.outputs.google_project_id }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           read_only_ssh_key: ${{ secrets.READ_ONLY_SSH_KEY }}
-          django_settings_module: ${{ inputs.DJANGO_SETTINGS_MODULE} }
+          django_settings_module: ${{ inputs.DJANGO_SETTINGS_MODULE }}
+          image_name: ${{ steps.vars.outputs.image_name }}
           env: ${{ steps.vars.outputs.env }}
           tag1: ${{ steps.tags.outputs.tag1 }}
           tag2: ${{ steps.tags.outputs.tag2 }}
