@@ -56,6 +56,8 @@ jobs:
       - name: Setup variables
         id: vars
         uses: TheKeySupportServices/github-actions/.github/actions/setup-variables@main
+        with:
+          image_name_override: ${{ inputs.image_name_override }}
 
       - uses: google-github-actions/setup-gcloud@v0
         with:
