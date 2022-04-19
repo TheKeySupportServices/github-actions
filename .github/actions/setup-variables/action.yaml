@@ -24,13 +24,14 @@ runs:
       - id: vars
         shell: bash
         run: |
+          ENV="qa"
           echo "::set-output name=google_project_id::thekey-dev"
           echo "::set-output name=env::qa"
           echo ::set-output name=image_name::$(echo ${{ github.event.repository.name }})
 
           if [[ "${{github.base_ref}}" == "main" || "${{github.ref}}" == "refs/heads/main" ]]; then
             echo "::set-output name=google_project_id::thekey-prod"
-            echo "::set-output name=env::prod"
+            ENV="prod"
           fi
 
           GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
@@ -39,7 +40,10 @@ runs:
             echo ::set-output name=image_name::$(echo ${{ inputs.image_name_override }})
           fi
 
+          echo ::set-output name=env::${ENV}
           echo ::set-output name=branch::$(echo ${GIT_BRANCH})
           echo ::set-output name=commit::$(echo ${GITHUB_SHA})
           echo ::set-output name=datetime::$(date +'%Y%m%d%H%M')
           echo ::set-output name=registry_url::eu.gcr.io
+          echo ::set-output name=kms-key::crypto-key-${ENV}
+          echo ::set-output name=kms-keyring::keyring-${ENV}

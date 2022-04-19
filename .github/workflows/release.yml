@@ -162,9 +162,9 @@ jobs:
           IMAGE_NAME: ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}
           IMAGE_TAG: ${{steps.tags.outputs.tag1}}
           GOOGLE_PROJECT_ID: ${{ steps.vars.outputs.google_project_id }}
-          KMS_KEY: "crypto-key-qa"
+          KMS_KEY: ${{ steps.vars.outputs.kms_key }}
           KMS_KEY_VERSION: "1"
-          KMS_KEYRING: "keyring-qa"
+          KMS_KEYRING: ${{ steps.vars.outputs.kms_keyring }}
           KMS_LOCATION: "europe-west2"
         uses: TheKeySupportServices/github-actions/.github/actions/attestation@main
 
