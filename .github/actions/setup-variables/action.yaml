@@ -47,3 +47,6 @@ runs:
           echo ::set-output name=registry_url::eu.gcr.io
           echo ::set-output name=kms-key::crypto-key-${ENV}
           echo ::set-output name=kms-keyring::keyring-${ENV}
+
+          echo crypto-key-${ENV}
+          echo keyring-${ENV}
