@@ -22,6 +22,8 @@ outputs:
     value: ${{ steps.vars.outputs.kms-key }}
   kms_keyring:
     value: ${{ steps.vars.outputs.kms-keyring }}
+  attestor:
+    value: ${{ steps.vars.outputs.attestor }}
 runs:
     using: "composite"
     steps:
@@ -51,6 +53,4 @@ runs:
           echo ::set-output name=registry_url::eu.gcr.io
           echo ::set-output name=kms-key::crypto-key-${ENV}
           echo ::set-output name=kms-keyring::keyring-${ENV}
-
-          echo crypto-key-${ENV}
-          echo keyring-${ENV}
+          echo ::set-output name=attestor::ba-attestor-${ENV}
