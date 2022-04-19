@@ -18,6 +18,10 @@ outputs:
     value: ${{ steps.vars.outputs.registry_url }}
   image_name:
     value: ${{ steps.vars.outputs.image_name }}
+  kms-key:
+    value: ${{ steps.vars.outputs.kms-key }}
+  kms-keyring:
+    value: ${{ steps.vars.outputs.kms-keyring }}
 runs:
     using: "composite"
     steps:
