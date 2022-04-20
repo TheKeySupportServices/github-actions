@@ -28,8 +28,6 @@ outputs:
     value: ${{ steps.vars.outputs.kms-keyring }}
   attestor:
     value: ${{ steps.vars.outputs.attestor }}
-  binary_auth_json_key:
-    value: ${{ steps.vars.outputs.binary_auth_json_key }}
 runs:
     using: "composite"
     steps:
@@ -37,7 +35,7 @@ runs:
         shell: bash
         run: |
           ENV="qa"
-          BINARY_AUTH_KEY=$(echo ${{ inputs.binary_auth_json_key_prod }})
+          BINARY_AUTH_KEY=${{ inputs.binary_auth_json_key_prod }}
           echo "::set-output name=google_project_id::thekey-dev"
           echo "::set-output name=env::qa"
           echo ::set-output name=image_name::$(echo ${{ github.event.repository.name }})
