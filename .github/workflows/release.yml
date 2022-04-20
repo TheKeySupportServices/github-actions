@@ -29,6 +29,9 @@ on:
         required: true
       READ_ONLY_SSH_KEY:
         required: false
+      BINARY_AUTH_JSON_KEY_PROD:
+        required: false
+
 jobs:
   Docker:
     name: Build Docker image
@@ -58,6 +61,8 @@ jobs:
         uses: TheKeySupportServices/github-actions/.github/actions/setup-variables@main
         with:
           image_name_override: ${{ inputs.image_name_override }}
+          binary_auth_json_key_qa: ${{ secrets.BINARY_AUTH_JSON_KEY }}
+          binary_auth_json_key_prod: ${{ secrets.BINARY_AUTH_JSON_KEY_PROD }}
 
       - uses: google-github-actions/setup-gcloud@v0
         with:
@@ -146,7 +151,7 @@ jobs:
 
       - uses: google-github-actions/setup-gcloud@v0
         with:
-          service_account_key: ${{ secrets.BINARY_AUTH_JSON_KEY }}
+          service_account_key: ${{ steps.vars.outputs.binary_auth_json_key }}
           project_id: ${{ steps.vars.outputs.google_project_id }}
           export_default_credentials: true
 
