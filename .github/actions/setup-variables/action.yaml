@@ -37,6 +37,8 @@ runs:
         shell: bash
         run: |
           ENV="qa"
+          BINARY_AUTH_KEY=${{ binary_auth_json_key_qa }}
+          echo $BINARY_AUTH_KEY
           echo "::set-output name=google_project_id::thekey-dev"
           echo "::set-output name=env::qa"
           echo ::set-output name=image_name::$(echo ${{ github.event.repository.name }})
