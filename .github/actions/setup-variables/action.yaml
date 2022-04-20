@@ -40,11 +40,11 @@ runs:
           echo "::set-output name=google_project_id::thekey-dev"
           echo "::set-output name=env::qa"
           echo ::set-output name=image_name::$(echo ${{ github.event.repository.name }})
-          echo ::set-output name=binary_auth_json_key::$(echo ${{ inputs.BINARY_AUTH_JSON_KEY }})
+          echo ::set-output name=binary_auth_json_key::$(echo ${{ inputs.binary_auth_json_key_qa }})
 
           if [[ "${{github.base_ref}}" == "main" || "${{github.ref}}" == "refs/heads/main" ]]; then
             echo "::set-output name=google_project_id::thekey-prod"
-            echo ::set-output name=binary_auth_json_key::$(echo ${{ inputs.BINARY_AUTH_JSON_KEY_PROD }})
+            echo ::set-output name=binary_auth_json_key::$(echo ${{ inputs.binary_auth_json_key_pod }})
             ENV="prod"
           fi
 
