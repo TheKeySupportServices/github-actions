@@ -58,7 +58,7 @@ jobs:
 
       - name: Setup variables
         id: vars
-        uses: TheKeySupportServices/github-actions/.github/actions/setup-variables@main
+        uses: TheKeySupportServices/github-actions/.github/actions/setup-variables@prod
         with:
           image_name_override: ${{ inputs.image_name_override }}
           binary_auth_json_key_qa: ${{ secrets.BINARY_AUTH_JSON_KEY }}
