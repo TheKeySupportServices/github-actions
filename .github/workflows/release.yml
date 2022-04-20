@@ -61,8 +61,8 @@ jobs:
         uses: TheKeySupportServices/github-actions/.github/actions/setup-variables@main
         with:
           image_name_override: ${{ inputs.image_name_override }}
-          binary_auth_json_key_qa: ${{ secrets.BINARY_AUTH_JSON_KEY }}
-          binary_auth_json_key_prod: ${{ secrets.BINARY_AUTH_JSON_KEY_PROD }}
+          binary_auth_json_key_qa: "${{ secrets.BINARY_AUTH_JSON_KEY }}"
+          binary_auth_json_key_prod: "${{ secrets.BINARY_AUTH_JSON_KEY_PROD }}"
 
       - uses: google-github-actions/setup-gcloud@v0
         with:
