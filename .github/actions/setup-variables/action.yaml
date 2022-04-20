@@ -44,7 +44,7 @@ runs:
 
           if [[ "${{github.base_ref}}" == "main" || "${{github.ref}}" == "refs/heads/main" ]]; then
             echo "::set-output name=google_project_id::thekey-prod"
-            echo ::set-output name=binary_auth_json_key::test
+            echo ::set-output name=binary_auth_json_key::${{ inputs.binary_auth_json_key_prod }}
             ENV="prod"
           fi
 
