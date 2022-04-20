@@ -153,14 +153,14 @@ jobs:
         if: ${{steps.vars.outputs.env}} == 'qa'
         with:
           service_account_key: ${{ secrets.BINARY_AUTH_JSON_KEY }}
-          project_id: ${{ steps.vars.outputs.google_project_id }}
+          project_id: "thekey-dev"
           export_default_credentials: true
 
       - uses: google-github-actions/setup-gcloud@v0
         if: ${{steps.vars.outputs.env}} == 'prod'
         with:
           service_account_key: ${{ secrets.BINARY_AUTH_JSON_KEY_PROD }}
-          project_id: ${{ steps.vars.outputs.google_project_id }}
+          project_id: "thekey-prod"
           export_default_credentials: true
 
       - name: Configure docker
@@ -179,7 +179,7 @@ jobs:
           KMS_KEY_VERSION: "1"
           KMS_KEYRING: ${{ steps.vars.outputs.kms_keyring }}
           KMS_LOCATION: "europe-west2"
-        uses: TheKeySupportServices/github-actions/.github/actions/attestation@main
+        uses: TheKeySupportServices/github-actions/.github/actions/attestation@prod
 
 
 
