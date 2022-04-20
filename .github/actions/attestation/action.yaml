@@ -25,7 +25,7 @@ runs:
       - id: attestation
         shell: bash
         run: |
-          gcloud projects list
+          gcloud auth list
           # Default parent properties
           ATTESTOR_PROJECT="${ATTESTOR_PROJECT:-${PROJECT_ID}}"
           KMS_PROJECT="${KMS_PROJECT:-${PROJECT_ID}}"
