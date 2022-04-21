@@ -58,7 +58,7 @@ jobs:
 
       - name: Setup variables
         id: vars
-        uses: TheKeySupportServices/github-actions/.github/actions/setup-variables@main
+        uses: TheKeySupportServices/github-actions/.github/actions/setup-variables@prod
         with:
           image_name_override: ${{ inputs.image_name_override }}
           binary_auth_json_key_qa: ${{ secrets.BINARY_AUTH_JSON_KEY }}
@@ -79,7 +79,7 @@ jobs:
           branch: ${{ steps.vars.outputs.branch }}
           commit: ${{ steps.vars.outputs.commit }}
           datetime: ${{ steps.vars.outputs.datetime }}
-        uses: TheKeySupportServices/github-actions/.github/actions/create-tags@main
+        uses: TheKeySupportServices/github-actions/.github/actions/create-tags@prod
 
       - name: Slack notification
         uses: slackapi/slack-github-action@v1.18.0
@@ -150,9 +150,17 @@ jobs:
         run: gcloud config unset project
 
       - uses: google-github-actions/setup-gcloud@v0
+        if: ${{steps.vars.outputs.env}} == 'qa'
         with:
           service_account_key: ${{ secrets.BINARY_AUTH_JSON_KEY }}
-          project_id: ${{ inputs.PROJECT_ID}}
+          project_id: "thekey-dev"
+          export_default_credentials: true
+
+      - uses: google-github-actions/setup-gcloud@v0
+        if: ${{steps.vars.outputs.env}} == 'prod'
+        with:
+          service_account_key: ${{ secrets.BINARY_AUTH_JSON_KEY_PROD }}
+          project_id: "thekey-prod"
           export_default_credentials: true
 
       - name: Configure docker
@@ -171,7 +179,7 @@ jobs:
           KMS_KEY_VERSION: "1"
           KMS_KEYRING: ${{ steps.vars.outputs.kms_keyring }}
           KMS_LOCATION: "europe-west2"
-        uses: TheKeySupportServices/github-actions/.github/actions/attestation@main
+        uses: TheKeySupportServices/github-actions/.github/actions/attestation@prod
 
 
 

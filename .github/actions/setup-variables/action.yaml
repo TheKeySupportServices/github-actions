@@ -28,8 +28,6 @@ outputs:
     value: ${{ steps.vars.outputs.kms-keyring }}
   attestor:
     value: ${{ steps.vars.outputs.attestor }}
-  binary_auth_json_key:
-    value: ${{ steps.vars.outputs.binary_auth_json_key }}
 runs:
     using: "composite"
     steps:
