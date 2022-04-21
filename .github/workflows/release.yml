@@ -58,7 +58,7 @@ jobs:
 
       - name: Setup variables
         id: vars
-        uses: TheKeySupportServices/github-actions/.github/actions/setup-variables@prod
+        uses: TheKeySupportServices/github-actions/.github/actions/setup-variables@main
         with:
           image_name_override: ${{ inputs.image_name_override }}
           binary_auth_json_key_qa: ${{ secrets.BINARY_AUTH_JSON_KEY }}
@@ -79,7 +79,7 @@ jobs:
           branch: ${{ steps.vars.outputs.branch }}
           commit: ${{ steps.vars.outputs.commit }}
           datetime: ${{ steps.vars.outputs.datetime }}
-        uses: TheKeySupportServices/github-actions/.github/actions/create-tags@prod
+        uses: TheKeySupportServices/github-actions/.github/actions/create-tags@main
 
       - name: Slack notification
         uses: slackapi/slack-github-action@v1.18.0
@@ -179,7 +179,7 @@ jobs:
           KMS_KEY_VERSION: "1"
           KMS_KEYRING: ${{ steps.vars.outputs.kms_keyring }}
           KMS_LOCATION: "europe-west2"
-        uses: TheKeySupportServices/github-actions/.github/actions/attestation@prod
+        uses: TheKeySupportServices/github-actions/.github/actions/attestation@main
 
 
 
