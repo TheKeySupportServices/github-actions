@@ -79,7 +79,7 @@ jobs:
           branch: ${{ steps.vars.outputs.branch }}
           commit: ${{ steps.vars.outputs.commit }}
           datetime: ${{ steps.vars.outputs.datetime }}
-        uses: TheKeySupportServices/github-actions/.github/actions/create-tags@main
+        uses: TheKeySupportServices/github-actions/.github/actions/create-tags@prod
 
       - name: Slack notification
         uses: slackapi/slack-github-action@v1.18.0
