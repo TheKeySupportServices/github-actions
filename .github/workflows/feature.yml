@@ -26,6 +26,8 @@ on:
         required: true
       BINARY_AUTH_JSON_KEY:
         required: true
+      BINARY_AUTH_JSON_KEY_PROD:
+        required: false
       READ_ONLY_SSH_KEY:
         required: false
 jobs:
