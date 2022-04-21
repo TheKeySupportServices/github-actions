@@ -150,14 +150,14 @@ jobs:
         run: gcloud config unset project
 
       - uses: google-github-actions/setup-gcloud@v0
-        if: ${{steps.vars.outputs.env}} == 'qa'
+        if: ${{steps.vars.outputs.env}} == qa
         with:
           service_account_key: ${{ secrets.BINARY_AUTH_JSON_KEY }}
           project_id: "thekey-dev"
           export_default_credentials: true
 
       - uses: google-github-actions/setup-gcloud@v0
-        if: ${{steps.vars.outputs.env}} == 'prod'
+        if: ${{steps.vars.outputs.env}} == prod
         with:
           service_account_key: ${{ secrets.BINARY_AUTH_JSON_KEY_PROD }}
           project_id: "thekey-prod"
