@@ -123,7 +123,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-      - if: ${{steps.vars.outputs.env}} == 'PROD'
+      - if: fromJSON((${{steps.vars.outputs.env}} == 'prod'))
         name: Tag snapshot
         uses: tvdias/github-tagger@v0.0.1
         with:
@@ -149,14 +149,14 @@ jobs:
       - name: Unset current project
         run: gcloud config unset project
 
-      - if: ${{steps.vars.outputs.env}} == 'QA'
+      - if: fromJSON((${{steps.vars.outputs.env}} == 'qa'))
         uses: google-github-actions/setup-gcloud@v0
         with:
           service_account_key: ${{ secrets.BINARY_AUTH_JSON_KEY }}
           project_id: "thekey-dev"
           export_default_credentials: true
 
-      - if: ${{steps.vars.outputs.env}} == 'PROD'
+      - if: fromJSON((${{steps.vars.outputs.env}} == 'prod'))
         uses: google-github-actions/setup-gcloud@v0
         with:
           service_account_key: ${{ secrets.BINARY_AUTH_JSON_KEY_PROD }}
