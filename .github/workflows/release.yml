@@ -31,6 +31,8 @@ on:
         required: false
       BINARY_AUTH_JSON_KEY_PROD:
         required: false
+      ACTIONS_STEP_DEBUG:
+        required: false
 
 jobs:
   Docker:
