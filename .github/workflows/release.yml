@@ -123,7 +123,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-      - if: 'prod' == format(${{ steps.vars.outputs.env }})
+      - if: format('prod') == format(${{ steps.vars.outputs.env }})
         name: Tag snapshot
         uses: tvdias/github-tagger@v0.0.1
         with:
