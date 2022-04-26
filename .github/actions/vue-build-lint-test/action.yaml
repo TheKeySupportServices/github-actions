@@ -19,8 +19,6 @@ inputs:
     required: true
   github_token:
     required: true
-  gh_token:
-    required: true
   environment:
     required: true
   image_name:
@@ -46,13 +44,13 @@ runs:
         run: PROJECT_ROOT=$(pwd) && cd /tmp/mount/coverage/ && sed -i "s|SF:/usr/src/app|SF:$PROJECT_ROOT|g" lcov.info
 
       - name: Report code coverage
-        if: ${{ inputs.tests_enabled == 'truee' }}
+        if: ${{ inputs.tests_enabled == 'true' }}
         uses: zgosalvez/github-actions-report-lcov@v1
         with:
           coverage-files: /tmp/mount/coverage/*.info
           minimum-coverage: 10
           artifact-name: code-coverage-report
-          github-token: ${ inputs.github_token }}
+          github-token: ${{ inputs.github_token }}
 
       - name: Delete test image
         if: ${{ inputs.tests_enabled == 'true' }}
@@ -61,5 +59,5 @@ runs:
 
       - name: Build the tagged Docker image
         shell: bash
-        run: docker build . --file Dockerfile --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ inputs.image_name }}:${{ inputs.tag1 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ inputs.image_name }}:${{ inputs.tag2 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ inputs.image_name }}:${{ inputs.tag3 }} --build-arg environment=${{ inputs.environment }} --build-arg site=${{ inputs.site }} --build-arg GH_PACKAGE_READ=${{ inputs.gh_token }}
+        run: docker build . --file Dockerfile --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ inputs.image_name }}:${{ inputs.tag1 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ inputs.image_name }}:${{ inputs.tag2 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ inputs.image_name }}:${{ inputs.tag3 }} --build-arg environment=${{ inputs.environment }} --build-arg site=${{ inputs.site }} --build-arg GH_PACKAGE_READ=${{ inputs.github_token }}
 
