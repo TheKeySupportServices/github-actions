@@ -26,7 +26,7 @@ runs:
           git show -s --format=%H > GIT_COMMIT
 
           GIT_COMMIT="$(sed -n '1p' 'GIT_COMMIT')"
-          echo ls -lah
+          echo $(ls -lah)
           LAST_CHANGES="$(cat 'GIT_CHANGES')"
           VERSION="$(sed -n '1p' 'version.txt')"
 
