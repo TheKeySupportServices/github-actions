@@ -32,5 +32,6 @@ runs:
           echo $LAST_CHANGES
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "GIT_COMMIT=$GIT_COMMIT" >> $GITHUB_ENV
-          echo "LAST_CHANGES=<<EOF$LAST_CHANGES" >> $GITHUB_ENV
+          echo "LAST_CHANGES<<EOF" >> $GITHUB_ENV
+          echo "$LAST_CHANGES" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
