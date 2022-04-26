@@ -35,3 +35,4 @@ runs:
           echo "LAST_CHANGES<<EOF" >> $GITHUB_ENV
           echo "$LAST_CHANGES" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
+          echo $GITHUB_ENV
