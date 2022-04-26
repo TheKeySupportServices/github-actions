@@ -27,7 +27,7 @@ runs:
 
           GIT_COMMIT="$(sed -n '1p' 'GIT_COMMIT')"
 
-          LAST_CHANGES="$(cat 'GIT_CHANGES')"
+          LAST_CHANGES="$(cat 'GIT_CHANGES')<<EOF"
           VERSION="$(sed -n '1p' 'version.txt')"
 
           echo "VERSION=$VERSION" >> $GITHUB_ENV
