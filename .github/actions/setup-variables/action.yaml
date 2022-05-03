@@ -48,6 +48,8 @@ runs:
 
           GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
 
+          echo GIT_BRANCH
+
           if [[ "${{ inputs.image_name_override }}" ]]; then
             echo ::set-output name=image_name::$(echo ${{ inputs.image_name_override }})
           fi
