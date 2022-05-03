@@ -34,7 +34,7 @@ runs:
       - id: vars
         shell: bash
         run: |
-          echo ${{github.base_ref}}
+          echo ${github.base_ref}
           ENV="qa"
           echo "::set-output name=google_project_id::thekey-dev"
           echo "::set-output name=env::qa"
