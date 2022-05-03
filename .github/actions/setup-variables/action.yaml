@@ -34,10 +34,13 @@ runs:
       - id: vars
         shell: bash
         run: |
+          echo ${{github.base_ref}}
           ENV="qa"
           echo "::set-output name=google_project_id::thekey-dev"
           echo "::set-output name=env::qa"
           echo ::set-output name=image_name::$(echo ${{ github.event.repository.name }})
+
+
 
           if [[ "${{github.base_ref}}" == "main" || "${{github.base_ref}}" == "master" || "${{github.ref}}" == "refs/heads/main" ]]; then
             echo "::set-output name=google_project_id::thekey-prod"
