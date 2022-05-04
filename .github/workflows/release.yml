@@ -74,7 +74,7 @@ jobs:
         run: gcloud auth configure-docker -q
 
       - name: Testing logic
-        run: echo ${{steps.vars.outputs.env }} ${{ github.head_ref }}
+        run: echo ${{steps.vars.outputs.env }} ${{ github.head_ref }} ${{ steps.vars.outputs.branch }}
 
       - name: Create tags
         id: tags
