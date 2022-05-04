@@ -38,15 +38,14 @@ runs:
           echo "::set-output name=google_project_id::thekey-dev"
           echo "::set-output name=env::qa"
           echo ::set-output name=image_name::$(echo ${{ github.event.repository.name }})
+          GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
 
 
 
-          if [[ "${{github.base_ref}}" == "main" || "${{github.base_ref}}" == "master" || "${{github.ref}}" == "refs/heads/main" ]]; then
+          if [[ "${{github.base_ref}}" == "main" || "${GIT_BRANCH}" == "master" || "${{github.ref}}" == "refs/heads/main" ]]; then
             echo "::set-output name=google_project_id::thekey-prod"
             ENV="prod"
           fi
-
-          GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
 
           echo GIT_BRANCH
 
