@@ -22,7 +22,7 @@ runs:
         run: |
           ENV=${{ inputs.branch }}
 
-          if [[ ${{ inputs.branch }} == 'main' ]]; then
+          if [[ ${{ inputs.branch }} == 'main' || ${{ inputs.branch }} == 'master' ]]; then
             ENV='prod'
           else
             ENV='qa'
