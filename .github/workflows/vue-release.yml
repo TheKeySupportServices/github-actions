@@ -47,6 +47,8 @@ jobs:
         uses: TheKeySupportServices/github-actions/.github/actions/setup-variables@main
         with:
           image_name_override: ${{ inputs.image_name_override }}
+          binary_auth_json_key_qa: ${{ secrets.BINARY_AUTH_JSON_KEY }}
+          binary_auth_json_key_prod: ${{ secrets.BINARY_AUTH_JSON_KEY_PROD }}
 
       - uses: google-github-actions/setup-gcloud@v0
         with:
@@ -107,7 +109,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-      - if: ${{steps.vars.outputs.env}} == 'PROD'
+      - if: steps.vars.outputs.env == 'prod'
         name: Tag snapshot
         continue-on-error: true
         uses: tvdias/github-tagger@v0.0.1
@@ -134,10 +136,18 @@ jobs:
       - name: Unset current project
         run: gcloud config unset project
 
-      - uses: google-github-actions/setup-gcloud@v0
+      - if: steps.vars.outputs.env == 'qa'
+        uses: google-github-actions/setup-gcloud@v0
         with:
           service_account_key: ${{ secrets.BINARY_AUTH_JSON_KEY }}
-          project_id: ${{ inputs.PROJECT_ID}}
+          project_id: "thekey-dev"
+          export_default_credentials: true
+
+      - if: steps.vars.outputs.env == 'prod'
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          service_account_key: ${{ secrets.BINARY_AUTH_JSON_KEY_PROD }}
+          project_id: "thekey-prod"
           export_default_credentials: true
 
       - name: Configure docker
@@ -147,15 +157,14 @@ jobs:
         run: gcloud components install beta
 
       - name: Image attestation
-        continue-on-error: true
         with:
-          ATTESTOR: "ba-attestor-qa"
+          ATTESTOR: ${{ steps.vars.outputs.attestor }}
           IMAGE_NAME: ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}
           IMAGE_TAG: ${{steps.tags.outputs.tag1}}
           GOOGLE_PROJECT_ID: ${{ steps.vars.outputs.google_project_id }}
-          KMS_KEY: "crypto-key-qa"
+          KMS_KEY: ${{ steps.vars.outputs.kms_key }}
           KMS_KEY_VERSION: "1"
-          KMS_KEYRING: "keyring-qa"
+          KMS_KEYRING: ${{ steps.vars.outputs.kms_keyring }}
           KMS_LOCATION: "europe-west2"
         uses: TheKeySupportServices/github-actions/.github/actions/attestation@main
 
