@@ -1,0 +1,76 @@
+name: 'build-lint-test'
+description: 'build'
+inputs:
+  registry_url:
+    required: true
+  google_project_id:
+    required: true
+  django_settings_module:
+    required: true
+  linting_enabled:
+    required: true
+    default: true
+  tests_enabled:
+    required: true
+    default: true
+  build_args:
+    required: false
+  tag1:
+    required: true
+  tag2:
+    required: true
+  tag3:
+    required: true
+  github_token:
+    required: false
+  env:
+    required: true
+  read_only_ssh_key:
+    required: false
+  image_name:
+    required: true
+runs:
+    using: "composite"
+    steps:
+      - name: test
+        id: testing
+        shell: bash
+        run: docker ps
+
+      - name: Build the test Docker image
+        if: ${{ inputs.tests_enabled == 'true' }}
+        shell: bash
+        run: mkdir -p /tmp/mount/ && docker build . --file Dockerfile --build-arg BUILD_ENV="ci" --build-arg NODE_KEY_ENV="${{ inputs.env }}" --build-arg SSH_KEY="${{ inputs.read_only_ssh_key }}" --tag ${{ inputs.image_name }}-test
+
+      - name: Start postgres instance
+        if: ${{ inputs.postgres_enabled == 'true' }}
+        shell: bash
+        run: docker run
+
+      - name: Linting
+        if: ${{ inputs.linting_enabled == 'true' }}
+        shell: bash
+        run: docker run -v /tmp/mount/:/app/output/ ${{ inputs.image_name }}-test /bin/bash -c "DJANGO_SETTINGS_MODULE=${{ inputs.DJANGO_SETTINGS_MODULE }} make lint && DJANGO_SETTINGS_MODULE=${{ inputs.DJANGO_SETTINGS_MODULE }} make django.missing-migrations"
+
+      - name: Generate coverage report
+        if: ${{ inputs.tests_enabled == 'true' }}
+        shell: bash
+        run: docker run --network host -v /tmp/mount/:/app/output/ ${{ inputs.image_name }}-test /bin/bash -c "python manage.py jenkins --enable-coverage --coverage-format=xml --settings=${{ inputs.DJANGO_SETTINGS_MODULE }} && cp -r /app/reports /app/output"
+
+      - uses: 5monkeys/cobertura-action@master
+        if: ${{ inputs.tests_enabled == 'true' }}
+        with:
+          path: /tmp/mount/reports/coverage.xml # Correct path so corb action can review report
+          repo_token: ${{ inputs.github_token }}
+          minimum_coverage: 75
+
+      - name: Delete test image
+        if: ${{ inputs.tests_enabled == 'true' }}
+        shell: bash
+        run: docker rmi ${{ inputs.image_name }}-test -f
+
+      - name: Build the tagged Docker image
+        shell: bash
+        run: docker build . --file Dockerfile --build-arg BUILD_ENV="ci" --build-arg NODE_KEY_ENV="${{ inputs.env }}" --build-arg SSH_KEY="${{ inputs.read_only_ssh_key }}" --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ inputs.image_name }}:${{ inputs.tag1 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ inputs.image_name }}:${{ inputs.tag2 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ inputs.image_name }}:${{ inputs.tag3 }} --build-arg environment=${{ inputs.environment }}
+
+
