@@ -2,6 +2,13 @@ name: 'Terraform'
 
 on:
   workflow_call:
+    inputs:
+      GOOGLE_PROJECT_ID:
+        required: true
+        type: string
+    secrets:
+      GOOGLE_CREDENTIALS:
+        required: true
 
 env:
   TF_LOG: INFO
@@ -27,8 +34,8 @@ jobs:
 
     - uses: google-github-actions/setup-gcloud@v0
       with:
-        service_account_key: ${{ secrets.TERRAFORM_GOOGLE_CREDENTIALS }}
-        project_id: "thekey-dev"
+        service_account_key: ${{ secrets.GOOGLE_CREDENTIALS }}
+        project_id: ${{ inputs.GOOGLE_PROJECT_ID }}
         export_default_credentials: true
 
     - name: Whitelist Github runner against cluster
