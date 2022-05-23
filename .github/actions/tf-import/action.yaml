@@ -9,6 +9,5 @@ runs:
       - id: import
         shell: bash
         run: |
-          ls -lah
-          ./env/import.sh
+          chmod u+x ./env/import.sh && ./env/import.sh
 
