@@ -54,6 +54,11 @@ jobs:
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.TERRAFORM_GOOGLE_CREDENTAILS }}
 
+    - name: Terraform import
+      id: import
+      uses: TheKeySupportServices/github-actions/.github/actions/tf-import@main
+      continue-on-error: true
+
     # Check terraform formatting
     - name: Terraform formatting
       id: fmt
@@ -87,7 +92,7 @@ jobs:
         script: |
           const output = `#### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
           #### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-          #### Terraform Validation 🤖${{ steps.validate.outputs.stdout }}
+          #### Terraform Validation 🤖\`${{ steps.validate.outputs.stdout }}\`
           #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
 
           <details><summary>Show Plan</summary>

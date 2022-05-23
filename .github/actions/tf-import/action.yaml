@@ -1,0 +1,13 @@
+name: 'import'
+description: 'import'
+inputs:
+  REMOVE_IP:
+    default: false
+runs:
+    using: "composite"
+    steps:
+      - id: import
+        shell: bash
+        run: |
+          ./import.sh
+
