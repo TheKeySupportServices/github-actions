@@ -19,7 +19,6 @@ runs:
     steps:
       - id: changes
         shell: bash
-        #run: .github/scripts/git_changes.sh
         run: |
           touch GIT_CHANGES
           git log HEAD^..HEAD --pretty="%h %an - %s" > GIT_CHANGES
