@@ -13,8 +13,6 @@ inputs:
   tests_enabled:
     required: true
     default: true
-  build_args:
-    required: false
   tag1:
     required: true
   tag2:
@@ -22,10 +20,6 @@ inputs:
   tag3:
     required: true
   github_token:
-    required: false
-  env:
-    required: true
-  read_only_ssh_key:
     required: false
   image_name:
     required: true

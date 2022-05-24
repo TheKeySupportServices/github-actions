@@ -122,8 +122,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           read_only_ssh_key: ${{ secrets.READ_ONLY_SSH_KEY }}
           django_settings_module: ${{ inputs.DJANGO_SETTINGS_MODULE }}
-          image_name: ${{ steps.vars.outputs.image_name }}
-          env: ${{steps.vars.outputs.env}}
           tag1: ${{ steps.tags.outputs.tag1 }}
           tag2: ${{ steps.tags.outputs.tag2 }}
           tag3: ${{ steps.tags.outputs.tag3 }}
