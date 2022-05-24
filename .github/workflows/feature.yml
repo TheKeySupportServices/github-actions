@@ -102,7 +102,7 @@ jobs:
           push: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: ${{ inputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}:${{ steps.tags.outputs.tag1 }},${{ inputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}:${{ steps.tags.outputs.tag2 }},${{ inputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}:${{ steps.tags.outputs.tag3 }}
+          tags: ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}:${{ steps.tags.outputs.tag1 }},${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}:${{ steps.tags.outputs.tag2 }},${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}:${{ steps.tags.outputs.tag3 }}
 
 
       - name: Build, lint, test
