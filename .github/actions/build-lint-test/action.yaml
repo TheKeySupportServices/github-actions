@@ -13,8 +13,6 @@ inputs:
   tests_enabled:
     required: true
     default: true
-  build_args:
-    required: false
   tag1:
     required: true
   tag2:
@@ -23,10 +21,6 @@ inputs:
     required: true
   github_token:
     required: false
-  env:
-    required: true
-  read_only_ssh_key:
-    required: false
   image_name:
     required: true
 runs:
@@ -34,7 +28,7 @@ runs:
     steps:
       - name: Build the Docker image
         shell: bash
-        run: mkdir -p /tmp/mount/ && docker build . --file Dockerfile --build-arg BUILD_ENV="ci" --build-arg NODE_KEY_ENV="${{ inputs.env }}" --build-arg SSH_KEY="${{ inputs.read_only_ssh_key }}" --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ inputs.image_name }}:${{ inputs.tag1 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ inputs.image_name }}:${{ inputs.tag2 }} --tag ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ inputs.image_name }}:${{ inputs.tag3 }} --build-arg environment=${{ inputs.environment }}
+        run: mkdir -p /tmp/mount/
 
       - name: Linting
         if: ${{ inputs.linting_enabled == 'true' }}
