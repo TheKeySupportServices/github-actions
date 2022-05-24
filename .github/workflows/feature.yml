@@ -119,7 +119,7 @@ jobs:
           tag1: ${{ steps.tags.outputs.tag1 }}
           tag2: ${{ steps.tags.outputs.tag2 }}
           tag3: ${{ steps.tags.outputs.tag3 }}
-        uses: TheKeySupportServices/github-actions/.github/actions/build-lint-test@main
+        uses: TheKeySupportServices/github-actions/.github/actions/build-lint-test@docker-cache
 
       - name: Slack notification
         uses: slackapi/slack-github-action@v1.18.0
