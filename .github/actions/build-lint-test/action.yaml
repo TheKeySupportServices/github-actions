@@ -39,12 +39,12 @@ runs:
       - name: Linting
         if: ${{ inputs.linting_enabled == 'true' }}
         shell: bash
-        run: docker run -v /tmp/mount/:/app/output/ ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ inputs.image_name }}:${{ inputs.tag1 }} /bin/bash -c "DJANGO_SETTINGS_MODULE=${{ inputs.DJANGO_SETTINGS_MODULE }} make lint && DJANGO_SETTINGS_MODULE=${{ inputs.DJANGO_SETTINGS_MODULE }} make django.missing-migrations"
+        run: docker run --load -v /tmp/mount/:/app/output/ ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ inputs.image_name }}:${{ inputs.tag1 }} /bin/bash -c "DJANGO_SETTINGS_MODULE=${{ inputs.DJANGO_SETTINGS_MODULE }} make lint && DJANGO_SETTINGS_MODULE=${{ inputs.DJANGO_SETTINGS_MODULE }} make django.missing-migrations"
 
       - name: Generate coverage report
         if: ${{ inputs.tests_enabled == 'true' }}
         shell: bash
-        run: docker run --network host -v /tmp/mount/:/app/output/ ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ inputs.image_name }}:${{ inputs.tag1 }} /bin/bash -c "python manage.py jenkins --enable-coverage --coverage-format=xml --settings=${{ inputs.DJANGO_SETTINGS_MODULE }} && cp -r /app/reports /app/output"
+        run: docker run --load --network host -v /tmp/mount/:/app/output/ ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ inputs.image_name }}:${{ inputs.tag1 }} /bin/bash -c "python manage.py jenkins --enable-coverage --coverage-format=xml --settings=${{ inputs.DJANGO_SETTINGS_MODULE }} && cp -r /app/reports /app/output"
 
       - uses: 5monkeys/cobertura-action@master
         if: ${{ inputs.tests_enabled == 'true' }}
