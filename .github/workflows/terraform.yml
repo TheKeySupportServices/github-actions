@@ -58,6 +58,8 @@ jobs:
       id: import
       uses: TheKeySupportServices/github-actions/.github/actions/tf-import@main
       continue-on-error: true
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.TERRAFORM_GOOGLE_CREDENTAILS }}
 
     # Check terraform formatting
     - name: Terraform formatting
