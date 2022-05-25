@@ -106,7 +106,7 @@ jobs:
           build-args: |
             BUILD_ENV="ci"
             NODE_KEY_ENV="${{ steps.vars.outputs.env }}"
-            SSH_KEY="${{ secrets.READ_ONLY_SSH_KEY }}"
+            SSH_KEY="${{ secrets.SARAH_RSA_KEY }}"
             environment="${{ steps.vars.outputs.env }}"
 
       - name: Test
