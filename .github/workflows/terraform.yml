@@ -56,7 +56,7 @@ jobs:
 
     - name: Terraform import
       id: import
-      uses: TheKeySupportServices/github-actions/.github/actions/tf-import@main
+      run: chmod u+x ./env/import.sh && ./env/import.sh
       continue-on-error: true
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.TERRAFORM_GOOGLE_CREDENTAILS }}
