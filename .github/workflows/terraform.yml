@@ -54,19 +54,19 @@ jobs:
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.TERRAFORM_GOOGLE_CREDENTAILS }}
 
+    # Check terraform formatting
+    - name: Terraform formatting
+      id: fmt
+      run: terraform fmt -diff
+      continue-on-error: true
+
     - name: Terraform import
       id: import
       run: |
         chmod u+x ./env/import.sh && ./env/import.sh
       continue-on-error: true
       env:
-        GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.TERRAFORM_GOOGLE_CREDENTAILS }}
-
-    # Check terraform formatting
-    - name: Terraform formatting
-      id: fmt
-      run: terraform fmt -diff
-      continue-on-error: true
+        GOOGLE_CREDENTIALS: ${{ secrets.TERRAFORM_GOOGLE_CREDENTAILS }}
 
     # Validate terraform
     - name: Terraform Validate
