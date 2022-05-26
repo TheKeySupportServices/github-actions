@@ -101,7 +101,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: file it
-        run: echo $${{ secrets.READ_ONLY_SSH_KEY }} | test
+        run: echo $${{ secrets.READ_ONLY_SSH_KEY }} > test
 
       - name: Build
         uses: docker/build-push-action@v2
