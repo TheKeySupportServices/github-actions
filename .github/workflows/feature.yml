@@ -117,7 +117,6 @@ jobs:
           registry_url: ${{ steps.vars.outputs.registry_url }}
           google_project_id: ${{ steps.vars.outputs.google_project_id }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          read_only_ssh_key: ${{ secrets.READ_ONLY_SSH_KEY }}
           django_settings_module: ${{ inputs.DJANGO_SETTINGS_MODULE }}
           image_name: ${{ steps.vars.outputs.image_name }}
           env: ${{ steps.vars.outputs.env }}
