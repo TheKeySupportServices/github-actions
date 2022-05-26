@@ -113,7 +113,7 @@ jobs:
             SSH_KEY=${{ secrets.READ_ONLY_SSH_KEY }}
             environment="${{ steps.vars.outputs.env }}"
           ssh:
-            "SSH_KEY=${{ secrets.READ_ONLY_SSH_KEY }}"
+            ${{ secrets.READ_ONLY_SSH_KEY }}
 
       - name: Test
         with:
