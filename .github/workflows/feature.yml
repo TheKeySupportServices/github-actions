@@ -104,10 +104,10 @@ jobs:
           cache-to: type=gha,mode=max
           tags: ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}:${{ steps.tags.outputs.tag1 }},${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}:${{ steps.tags.outputs.tag2 }},${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}:${{ steps.tags.outputs.tag3 }}
           build-args: |
-            BUILD_ENV="ci"
-            NODE_KEY_ENV="${{ steps.vars.outputs.env }}"
+            BUILD_ENV=ci
+            NODE_KEY_ENV=${{ steps.vars.outputs.env }}
             SSH_KEY=${{ secrets.READ_ONLY_SSH_KEY }}
-            environment="${{ steps.vars.outputs.env }}"
+            environment=${{ steps.vars.outputs.env }}
 
       - name: Test
         with:
