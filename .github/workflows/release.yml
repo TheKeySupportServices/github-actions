@@ -120,7 +120,8 @@ jobs:
             NODE_KEY_ENV="${{ steps.vars.outputs.env }}"
             SSH_KEY=${{ secrets.READ_ONLY_SSH_KEY }}
             environment="${{ steps.vars.outputs.env }}"
-
+          #ssh: |
+          #  default=${{ env.SSH_AUTH_SOCK }}
       - name: Test
         with:
           linting_enabled: ${{ inputs.LINTING_ENABLED }}
@@ -167,8 +168,6 @@ jobs:
             NODE_KEY_ENV=${{ steps.vars.outputs.env }}
             SSH_KEY=${{ secrets.READ_ONLY_SSH_KEY }}
             environment=${{ steps.vars.outputs.env }}
-          ssh: |
-            default=${{ env.SSH_AUTH_SOCK }}
 
       - name: Slack notification
         uses: slackapi/slack-github-action@v1.18.0

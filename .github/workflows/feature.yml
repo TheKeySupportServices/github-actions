@@ -116,8 +116,8 @@ jobs:
             NODE_KEY_ENV=${{ steps.vars.outputs.env }}
             SSH_KEY=${{ secrets.READ_ONLY_SSH_KEY }}
             environment=${{ steps.vars.outputs.env }}
-          ssh: |
-            default=${{ env.SSH_AUTH_SOCK }}
+          #ssh: |
+          #  default=${{ env.SSH_AUTH_SOCK }}
 
       - name: Test
         with:
