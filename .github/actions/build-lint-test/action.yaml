@@ -50,6 +50,6 @@ runs:
           show_branch: false
           show_class_names: false
           show_missing: false
-          only_changed_files: false
+          only_changed_files: true
           minimum_coverage: 75
 
