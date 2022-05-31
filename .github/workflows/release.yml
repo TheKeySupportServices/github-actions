@@ -102,11 +102,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: SSH Agent setup
-        if: ${{ secrets.PYTHON_GRPC_SSH_KEY }}
-        uses: webfactory/ssh-agent@v0.5.4
-        with:
-            ssh-private-key: ${{ secrets.PYTHON_GRPC_SSH_KEY }}
+      #- name: SSH Agent setup
+      #  if: ${{ secrets.PYTHON_GRPC_SSH_KEY }}
+      #  uses: webfactory/ssh-agent@v0.5.4
+      #  with:
+      #      ssh-private-key: ${{ secrets.PYTHON_GRPC_SSH_KEY }}
 
       - name: Build
         uses: docker/build-push-action@v2
