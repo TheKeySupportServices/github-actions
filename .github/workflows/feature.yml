@@ -100,8 +100,6 @@ jobs:
 
       - name: Check secrets
         id: secrets
-        outputs:
-          have_secrets: ${{ steps.setvar.outputs.have_secrets }}
         run: |
          if [[ "${{ secrets.PYTHON_GRPC_SSH_KEY }}" != "" ]];
          then
