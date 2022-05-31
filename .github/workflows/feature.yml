@@ -30,6 +30,8 @@ on:
         required: false
       READ_ONLY_SSH_KEY:
         required: false
+      PYTHON_GRPC_SSH_KEY:
+        required: false
 jobs:
   Docker:
     name: Build Docker image
@@ -96,6 +98,10 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      - uses: webfactory/ssh-agent@v0.5.4
+        with:
+            ssh-private-key: ${{ secrets.PYTHON_GRPC_SSH_KEY }}
+
       - name: Build
         uses: docker/build-push-action@v2
         with:
@@ -108,6 +114,8 @@ jobs:
             NODE_KEY_ENV=${{ steps.vars.outputs.env }}
             SSH_KEY=${{ secrets.READ_ONLY_SSH_KEY }}
             environment=${{ steps.vars.outputs.env }}
+          ssh: |
+            default=${{ env.SSH_AUTH_SOCK }}
 
       - name: Test
         with:
