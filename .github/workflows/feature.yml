@@ -98,7 +98,8 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - uses: webfactory/ssh-agent@v0.5.4
+      - name: SSH Agent setup
+        uses: webfactory/ssh-agent@v0.5.4
         with:
             ssh-private-key: ${{ secrets.PYTHON_GRPC_SSH_KEY }}
 
