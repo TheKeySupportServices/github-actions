@@ -45,4 +45,5 @@ runs:
         with:
           path: /tmp/mount/reports/coverage.xml # Correct path so corb action can review report
           repo_token: ${{ inputs.github_token }}
+          only_changed: true
           minimum_coverage: 75
