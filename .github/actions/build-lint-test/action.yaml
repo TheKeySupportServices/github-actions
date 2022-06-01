@@ -47,3 +47,4 @@ runs:
           repo_token: ${{ inputs.github_token }}
           only_changed_files: false
           minimum_coverage: 75
+        continue-on-error: true
