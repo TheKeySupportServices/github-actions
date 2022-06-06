@@ -41,6 +41,11 @@ jobs:
     - name: Whitelist Github runner against cluster
       uses: TheKeySupportServices/github-actions/.github/actions/whitelist-ip@main
 
+    - name: Generate default kubeconfig file for cluster auth
+      uses: TheKeySupportServices/github-actions/.github/actions/cluster-auth@tf-cluster-auth
+      with:
+        google_project_id: ${{ inputs.GOOGLE_PROJECT_ID }}
+        cluster_name: ${{ inputs.CLUSTER_NAME }}
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
