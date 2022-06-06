@@ -12,4 +12,4 @@ runs:
         shell: bash
         run: |
           gcloud container clusters get-credentials ${{ inputs.CLUSTER_NAME }} --zone europe-west2-c --project ${{ inputs.GOOGLE_PROJECT_ID }}
-
+          kubectl get pods -n qa
