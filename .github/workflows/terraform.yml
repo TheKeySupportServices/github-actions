@@ -14,7 +14,7 @@ on:
         required: true
 
 env:
-  TF_LOG: INFO
+  TF_LOG: DEBUG
 
 jobs:
   terraform:
