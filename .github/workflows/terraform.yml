@@ -6,6 +6,9 @@ on:
       GOOGLE_PROJECT_ID:
         required: true
         type: string
+      CLUSTER_NAME:
+        required: true
+        type: string
     secrets:
       GOOGLE_CREDENTIALS:
         required: true
