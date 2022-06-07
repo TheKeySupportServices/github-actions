@@ -30,6 +30,10 @@ runs:
         shell: bash
         run: mkdir -p /tmp/mount/
 
+      - name: Docker image sizes
+        shell: bash
+        run: docker images
+
       - name: Linting
         if: ${{ inputs.linting_enabled == 'true' }}
         shell: bash
