@@ -1,0 +1,15 @@
+name: 'cluster-auth'
+description: 'generate kubeconfig file'
+inputs:
+  GOOGLE_PROJECT_ID:
+    required: true
+  CLUSTER_NAME:
+    required: true
+runs:
+    using: "composite"
+    steps:
+      - id: cluster-generate-default-kubeconfig
+        shell: bash
+        run: |
+          gcloud container clusters get-credentials ${{ inputs.CLUSTER_NAME }} --zone europe-west2-c --project ${{ inputs.GOOGLE_PROJECT_ID }}
+          kubectl get pods -n qa

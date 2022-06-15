@@ -6,6 +6,9 @@ on:
       GOOGLE_PROJECT_ID:
         required: true
         type: string
+      CLUSTER_NAME:
+        required: true
+        type: string
     secrets:
       GOOGLE_CREDENTIALS:
         required: true
@@ -42,6 +45,11 @@ jobs:
       id: whitelist
       uses: TheKeySupportServices/github-actions/.github/actions/whitelist-ip@main
 
+    - name: Generate default kubeconfig file for cluster auth
+      uses: TheKeySupportServices/github-actions/.github/actions/cluster-auth@tf-cluster-auth
+      with:
+        google_project_id: ${{ inputs.GOOGLE_PROJECT_ID }}
+        cluster_name: ${{ inputs.CLUSTER_NAME }}
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
