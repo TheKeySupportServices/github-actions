@@ -85,6 +85,7 @@ jobs:
       run: terraform plan -no-color
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.TERRAFORM_GOOGLE_CREDENTAILS }}
+        GITHUB_RUNNER_IP: ${{ steps.whitelist.outputs.GITHUB_RUNNER_IP }}
 
     # Add a comment to pull requests with plan results
     - name: add-plan-comment
