@@ -3,6 +3,8 @@ description: 'whitelist'
 inputs:
   REMOVE_IP:
     default: false
+outputs:
+  GITHUB_RUNNER_IP: ${ steps.whitelist.outputs.GITHUB_RUNNER_IP }
 runs:
     using: "composite"
     steps:
@@ -21,6 +23,9 @@ runs:
             # Get IP currently being used by this GH runner.
             GH_IP=$(wget -qO- https://ipecho.net/plain ; echo)
             echo "Current Github runner IP: $GH_IP"
+
+            echo ::set-output name=GITHUB_RUNNER_IP::${GH_IP}
+
 
             # If REMOVE_IP is false then continue to add GH runner ip to authorized ip list.
             if ! $REMOVE_IP; then

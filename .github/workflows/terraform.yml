@@ -39,6 +39,7 @@ jobs:
         export_default_credentials: true
 
     - name: Whitelist Github runner against cluster
+      id: whitelist
       uses: TheKeySupportServices/github-actions/.github/actions/whitelist-ip@main
 
 
@@ -53,6 +54,7 @@ jobs:
       run: terraform init --upgrade
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.TERRAFORM_GOOGLE_CREDENTAILS }}
+        GITHUB_RUNNER_IP: ${{ steps.whitelist.outputs.GITHUB_RUNNER_IP }}
 
     - name: Terraform import
       id: import
@@ -60,6 +62,7 @@ jobs:
       continue-on-error: true
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.TERRAFORM_GOOGLE_CREDENTAILS }}
+        GITHUB_RUNNER_IP: ${{ steps.whitelist.outputs.GITHUB_RUNNER_IP }}
 
     # Check terraform formatting
     - name: Terraform formatting
@@ -73,6 +76,7 @@ jobs:
       run: terraform validate -no-color
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.TERRAFORM_GOOGLE_CREDENTAILS }}
+        GITHUB_RUNNER_IP: ${{ steps.whitelist.outputs.GITHUB_RUNNER_IP }}
 
     # Run a terraform plan for pull requests only
     - name: Terraform Plan
@@ -81,6 +85,7 @@ jobs:
       run: terraform plan -no-color
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.TERRAFORM_GOOGLE_CREDENTAILS }}
+        GITHUB_RUNNER_IP: ${{ steps.whitelist.outputs.GITHUB_RUNNER_IP }}
 
     # Add a comment to pull requests with plan results
     - name: add-plan-comment
@@ -118,6 +123,7 @@ jobs:
       run: terraform apply -auto-approve
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.TERRAFORM_GOOGLE_CREDENTAILS }}
+        GITHUB_RUNNER_IP: ${{ steps.whitelist.outputs.GITHUB_RUNNER_IP }}
 
     - name: Remove whitelisted Github runner IP
       uses: TheKeySupportServices/github-actions/.github/actions/whitelist-ip@main
