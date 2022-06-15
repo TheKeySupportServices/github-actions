@@ -25,7 +25,7 @@ runs:
             GH_IP=$(wget -qO- https://ipecho.net/plain ; echo)
             echo "Current Github runner IP: $GH_IP"
 
-            echo ::set-output name=GITHUB_RUNNER_IP::${GH_IP}
+            echo ::set-output name=GITHUB_RUNNER_IP::${GH_IP}/32
 
 
             # If REMOVE_IP is false then continue to add GH runner ip to authorized ip list.
