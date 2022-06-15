@@ -4,7 +4,8 @@ inputs:
   REMOVE_IP:
     default: false
 outputs:
-  GITHUB_RUNNER_IP: ${{ steps.whitelist.outputs.GITHUB_RUNNER_IP }}
+  GITHUB_RUNNER_IP:
+    value: ${{ steps.whitelist.outputs.GITHUB_RUNNER_IP }}
 runs:
     using: "composite"
     steps:
