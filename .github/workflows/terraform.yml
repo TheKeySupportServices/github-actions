@@ -82,7 +82,7 @@ jobs:
     - name: Terraform Plan
       id: plan
       if: github.event_name == 'pull_request'
-      run: terraform plan -no-color
+      run: terraform plan -var="${{ steps.whitelist.outputs.GITHUB_RUNNER_IP }}" -no-color
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.TERRAFORM_GOOGLE_CREDENTAILS }}
         GITHUB_RUNNER_IP: ${{ steps.whitelist.outputs.GITHUB_RUNNER_IP }}
@@ -120,7 +120,7 @@ jobs:
       # On push to main, build or change infrastructure according to Terraform configuration files
     - name: Terraform Apply
       if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-      run: terraform apply -auto-approve
+      run: terraform apply -var="${{ steps.whitelist.outputs.GITHUB_RUNNER_IP }}" -auto-approve
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.TERRAFORM_GOOGLE_CREDENTAILS }}
         GITHUB_RUNNER_IP: ${{ steps.whitelist.outputs.GITHUB_RUNNER_IP }}
