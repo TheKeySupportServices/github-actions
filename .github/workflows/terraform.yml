@@ -125,7 +125,8 @@ jobs:
         GOOGLE_CREDENTIALS: ${{ secrets.TERRAFORM_GOOGLE_CREDENTAILS }}
         GITHUB_RUNNER_IP: ${{ steps.whitelist.outputs.GITHUB_RUNNER_IP }}
 
-    - name: Remove whitelisted Github runner IP
+    - name: Post Remove whitelisted Github runner IP
+      if: always()
       uses: TheKeySupportServices/github-actions/.github/actions/whitelist-ip@main
       with:
         REMOVE_IP: true
