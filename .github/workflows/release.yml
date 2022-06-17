@@ -125,10 +125,10 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           load: true
-          #cache-from: type=gha
-          #cache-to: type=gha,mode=max
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          #cache-from: type=local,src=/tmp/.buildx-cache
+          #cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
           tags: ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}:${{ steps.tags.outputs.tag1 }},${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}:${{ steps.tags.outputs.tag2 }},${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}:${{ steps.tags.outputs.tag3 }}
           build-args: |
             BUILD_ENV=ci
@@ -143,10 +143,10 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           load: true
-          #cache-from: type=gha
-          #cache-to: type=gha,mode=max
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          #cache-from: type=local,src=/tmp/.buildx-cache
+          #cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
           tags: ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}:${{ steps.tags.outputs.tag1 }},${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}:${{ steps.tags.outputs.tag2 }},${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}:${{ steps.tags.outputs.tag3 }}
           build-args: |
             BUILD_ENV=ci
@@ -192,10 +192,10 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          #cache-from: type=gha
-          #cache-to: type=gha,mode=max
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          #cache-from: type=local,src=/tmp/.buildx-cache
+          #cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
           tags: ${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}:${{ steps.tags.outputs.tag1 }},${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}:${{ steps.tags.outputs.tag2 }},${{ steps.vars.outputs.registry_url }}/${{ steps.vars.outputs.google_project_id }}/${{ steps.vars.outputs.image_name }}:${{ steps.tags.outputs.tag3 }}
           build-args: |
             BUILD_ENV=ci
