@@ -44,10 +44,10 @@ runs:
         shell: bash
         run: docker run --network host -v /tmp/mount/:/app/output/ ${{ inputs.registry_url }}/${{ inputs.google_project_id }}/${{ inputs.image_name }}:${{ inputs.tag1 }} /bin/bash -c "python manage.py jenkins --enable-coverage --coverage-format=xml --settings=${{ inputs.DJANGO_SETTINGS_MODULE }} && cp -r /app/reports /app/output"
 
-      - uses: 5monkeys/cobertura-action@v12
-        if: inputs.tests_enabled == 'true'
-        with:
-          path: /tmp/mount/reports/coverage.xml # Correct path so corb action can review report
-          repo_token: ${{ inputs.github_token }}
-          minimum_coverage: 75
-        continue-on-error: true
+      #- uses: 5monkeys/cobertura-action@v12
+      #  if: inputs.tests_enabled == 'true'
+      #  with:
+      #    path: /tmp/mount/reports/coverage.xml # Correct path so corb action can review report
+      #    repo_token: ${{ inputs.github_token }}
+      #    minimum_coverage: 75
+      #  continue-on-error: true
