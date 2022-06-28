@@ -1,6 +1,9 @@
 name: 'Helm Charts'
 on:
   workflow_call:
+env:
+  HELM_VERSION: "v3.7.1"
+  K8S_TARGET_VERSION: "v1.22.0"
 jobs:
   terraform:
     name: 'Helm Charts'
@@ -24,3 +27,11 @@ jobs:
     - name: Run tests
       id: tests
       run: helm unittest charts/* --helm3
+
+    - uses: cpanato/kubepug-installer@v1.0.0
+
+    - name: Run Kubepug with your Helm Charts Repository
+      run: |
+        find charts -mindepth 1 -maxdepth 1 -type d | xargs -t -n1 -I% /bin/bash -c 'helm template % --api-versions ${K8S_TARGET_VERSION} | kubepug --error-on-deprecated --error-on-deleted --k8s-version ${K8S_TARGET_VERSION} --input-file /dev/stdin'
+
+
