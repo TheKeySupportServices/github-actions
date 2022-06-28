@@ -1,18 +1,6 @@
 name: 'Helm Charts'
-
 on:
   workflow_call:
-    inputs:
-      GOOGLE_PROJECT_ID:
-        required: true
-        type: string
-    secrets:
-      GOOGLE_CREDENTIALS:
-        required: true
-
-env:
-  TF_LOG: INFO
-
 jobs:
   terraform:
     name: 'Helm Charts'
