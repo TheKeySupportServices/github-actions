@@ -28,7 +28,7 @@ jobs:
       id: tests
       run: helm unittest charts/* --helm3
 
-    - uses: cpanato/kubepug-installer@master
+    - uses: cpanato/kubepug-installer@main
 
     - name: Run Kubepug with your Helm Charts Repository
       run: |
